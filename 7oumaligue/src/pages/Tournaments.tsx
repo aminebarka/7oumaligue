@@ -310,8 +310,6 @@ const Tournaments: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-red-50 dark:from-slate-900 dark:via-orange-900 dark:to-red-900">
       <ReadOnlyBanner />
-      {/* Debug component */}
-      <DebugData />
       
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-orange-600 via-red-600 to-pink-800">
