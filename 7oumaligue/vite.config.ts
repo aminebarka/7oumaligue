@@ -32,7 +32,9 @@ export default defineConfig({
   },
   build: {
     outDir: "dist",
-    sourcemap: true,
+    minify: 'terser',
+    cssCodeSplit: true,
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
