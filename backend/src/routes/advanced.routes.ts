@@ -437,8 +437,8 @@ router.get('/matches/current', async (req, res) => {
       },
       include: {
         homeTeamRef: true,
-        awayTeamRef: true,
-        tournament: true
+        group: true,
+        tournament: true,
       },
       orderBy: {
         date: 'desc'
@@ -466,8 +466,8 @@ router.get('/matches/next', async (req, res) => {
       },
       include: {
         homeTeamRef: true,
-        awayTeamRef: true,
-        tournament: true
+        group: true,
+        tournament: true,
       },
       orderBy: {
         date: 'asc'
@@ -501,8 +501,8 @@ router.get('/matches/all', async (req, res) => {
       where: whereClause,
       include: {
         homeTeamRef: true,
-        awayTeamRef: true,
-        tournament: true
+        group: true,
+        tournament: true,
       },
       orderBy: {
         date: 'desc'
@@ -603,7 +603,6 @@ router.get('/all-data', async (req, res) => {
           homeTeam: true,
           awayTeam: true,
           homeScore: true,
-          awayScore: true,
           status: true,
           tournamentId: true,
           groupId: true,

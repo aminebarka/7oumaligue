@@ -68,10 +68,10 @@ Puis :
 La liste déroulante devrait maintenant afficher :
 ```
 Sélectionner un stade
-Stade Municipal de Casablanca - Casablanca
-Complexe Sportif Al Amal - Rabat
-Stade Prince Moulay Abdellah - Rabat
-Complexe Sportif Mohammed V - Casablanca
+Stade Municipal de Douz - Douz
+Complexe Sportif Al Amal - Douz
+Stade Prince Moulay Abdellah - Douz
+Complexe Sportif Mohammed V - Douz
 Stade Ibn Batouta - Tanger
 ```
 

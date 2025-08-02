@@ -147,8 +147,8 @@ npm run dev
 
 Après correction, la liste déroulante devrait afficher :
 - "Sélectionner un stade" (option par défaut)
-- "Stade Municipal de Casablanca - Casablanca"
-- "Complexe Sportif Al Amal - Rabat"
+- "Stade Municipal de Douz - Douz"
+- "Complexe Sportif Al Amal - Douz"
 - etc.
 
 Au lieu de :

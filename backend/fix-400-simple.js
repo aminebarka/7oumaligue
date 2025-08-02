@@ -86,7 +86,7 @@ async function fix400Simple() {
             endDate: "2024-02-20",
             numberOfGroups: 2,
             teamsPerGroup: 4,
-            stadium: "Stade Municipal de Casablanca",
+            stadium: "Stade Municipal de Douz",
             logo: "🏆",
             maxTeams: 8,
             registrationDeadline: "2024-02-10",
@@ -145,22 +145,22 @@ async function fix400Simple() {
         
         const testStadiums = [
           {
-            name: "Stade Municipal de Casablanca",
+            name: "Stade Municipal de Douz",
             address: "123 Avenue Mohammed V",
-            city: "Casablanca",
-            region: "Casablanca-Settat",
+            city: "Douz",
+            region: "Douz-Settat",
             capacity: 50000,
             fieldCount: 2,
             fieldTypes: ["Gazon naturel", "Gazon synthétique"],
             amenities: ["Vestiaires", "Parking", "Éclairage"],
-            description: "Stade principal de Casablanca",
+            description: "Stade principal de Douz",
             isPartner: true
           },
           {
-            name: "Complexe Sportif de Rabat",
+            name: "Complexe Sportif de Douz",
             address: "456 Boulevard Hassan II",
-            city: "Rabat",
-            region: "Rabat-Salé-Kénitra",
+            city: "Douz",
+            region: "Douz-Salé-Kénitra",
             capacity: 30000,
             fieldCount: 3,
             fieldTypes: ["Gazon synthétique"],

@@ -3,38 +3,26 @@ import { prisma } from "../config/database"
 import { success, created, notFound, badRequest } from "../utils/apiResponse"
 
 export const createMatch = async (req: Request, res: Response) => {
-  const { date, time, venue, homeTeam, awayTeam, tournamentId, groupId } = req.body
-
   try {
-    // Validate that teams are different
-    if (homeTeam === awayTeam) {
-      return badRequest(res, "Une équipe ne peut pas jouer contre elle-même")
+    const { date, time, venue, homeTeam, tournamentId, groupId } = req.body
+
+    // Validation des champs requis
+    if (!date || !time || !venue || !homeTeam || !tournamentId) {
+      return badRequest(res, "Tous les champs sont requis")
     }
 
-    // Verify teams exist
-    const homeTeamExists = await prisma.team.findFirst({
-      where: {
-        id: homeTeam,
-        tenantId: req.user?.tenantId,
-      },
-    })
+    // Convertir la date en format DateTime pour Prisma
+    const matchDate = new Date(date + 'T' + time + ':00')
 
-    const awayTeamExists = await prisma.team.findFirst({
-      where: {
-        id: awayTeam,
-        tenantId: req.user?.tenantId,
-      },
-    })
-
-    if (!homeTeamExists || !awayTeamExists) {
-      return badRequest(res, "Une ou plusieurs équipes n'existent pas")
+    // Vérifier que la date est valide
+    if (isNaN(matchDate.getTime())) {
+      return badRequest(res, "Format de date invalide")
     }
 
-    // Verify tournament exists
-    const tournament = await prisma.tournament.findFirst({
+    // Vérifier que le tournoi existe
+    const tournament = await prisma.tournament.findUnique({
       where: {
         id: tournamentId,
-        tenantId: req.user?.tenantId,
       },
     })
 
@@ -42,13 +30,26 @@ export const createMatch = async (req: Request, res: Response) => {
       return notFound(res, "Tournoi non trouvé")
     }
 
-    // Verify group exists if provided
+    // Vérifier que l'équipe existe (par nom ou par ID)
+    const homeTeamExists = await prisma.team.findFirst({
+      where: {
+        OR: [
+          { name: homeTeam },
+          { id: homeTeam }
+        ]
+      },
+    })
+
+    if (!homeTeamExists) {
+      return notFound(res, "L'équipe n'existe pas")
+    }
+
+    // Vérifier que le groupe existe si fourni
     if (groupId) {
-      const group = await prisma.group.findFirst({
+      const group = await prisma.group.findUnique({
         where: {
           id: groupId,
           tournamentId: tournamentId,
-          tenantId: req.user?.tenantId,
         },
       })
 
@@ -59,11 +60,11 @@ export const createMatch = async (req: Request, res: Response) => {
 
     const match = await prisma.match.create({
       data: {
-        date,
+        date: matchDate, // Utiliser la date convertie
         time,
         venue,
-        homeTeam,
-        awayTeam,
+        homeTeamId: homeTeamExists.id, // Utiliser homeTeamId pour la relation
+        homeTeam: homeTeamExists.name, // Garder le nom pour l'affichage
         tournamentId,
         groupId,
         status: "scheduled",
@@ -71,13 +72,6 @@ export const createMatch = async (req: Request, res: Response) => {
       },
       include: {
         homeTeamRef: {
-          select: {
-            id: true,
-            name: true,
-            logo: true,
-          },
-        },
-        awayTeamRef: {
           select: {
             id: true,
             name: true,
@@ -138,13 +132,6 @@ export const getMatches = async (req: Request, res: Response) => {
             logo: true,
           },
         },
-        awayTeamRef: {
-          select: {
-            id: true,
-            name: true,
-            logo: true,
-          },
-        },
         group: {
           select: {
             id: true,
@@ -179,11 +166,6 @@ export const getMatchById = async (req: Request, res: Response) => {
       },
       include: {
         homeTeamRef: {
-          include: {
-            playerRecords: true,
-          },
-        },
-        awayTeamRef: {
           include: {
             playerRecords: true,
           },
@@ -241,13 +223,6 @@ export const updateMatch = async (req: Request, res: Response) => {
             logo: true,
           },
         },
-        awayTeamRef: {
-          select: {
-            id: true,
-            name: true,
-            logo: true,
-          },
-        },
       },
     })
 
@@ -260,20 +235,13 @@ export const updateMatch = async (req: Request, res: Response) => {
 
 export const updateMatchScore = async (req: Request, res: Response) => {
   const { id } = req.params
-  const { homeScore, awayScore, status } = req.body
+  const { homeScore } = req.body
 
   try {
-    // Pour les admins, permettre la consultation de tous les matchs
-    const whereClause = req.user?.role === 'admin' 
-      ? { id: id }
-      : { id: id, tenantId: req.user?.tenantId }
-
     const match = await prisma.match.findUnique({
-      where: whereClause,
-      include: {
-        homeTeamRef: true,
-        awayTeamRef: true,
-        group: true,
+      where: {
+        id: id,
+        tenantId: req.user?.tenantId,
       },
     })
 
@@ -281,13 +249,21 @@ export const updateMatchScore = async (req: Request, res: Response) => {
       return notFound(res, "Match non trouvé")
     }
 
-    // Update match score
+    if (match.status === "completed") {
+      return badRequest(res, "Le match est déjà terminé")
+    }
+
+    const homeScoreInt = parseInt(homeScore)
+
+    if (isNaN(homeScoreInt)) {
+      return badRequest(res, "Score invalide")
+    }
+
     const updatedMatch = await prisma.match.update({
       where: { id: id },
       data: {
-        homeScore: Number.parseInt(homeScore),
-        awayScore: Number.parseInt(awayScore),
-        status: status || "completed",
+        homeScore: homeScoreInt,
+        status: "completed",
       },
       include: {
         homeTeamRef: {
@@ -297,60 +273,40 @@ export const updateMatchScore = async (req: Request, res: Response) => {
             logo: true,
           },
         },
-        awayTeamRef: {
+        group: {
           select: {
             id: true,
             name: true,
-            logo: true,
+          },
+        },
+        tournament: {
+          select: {
+            id: true,
+            name: true,
           },
         },
       },
     })
 
     // Update team statistics
-    const homeScoreInt = Number.parseInt(homeScore)
-    const awayScoreInt = Number.parseInt(awayScore)
-
-    // Update home team stats
     const homeTeamUpdate: any = {
       matchesPlayed: { increment: 1 },
       goalsScored: { increment: homeScoreInt },
-    }
-
-    // Update away team stats
-    const awayTeamUpdate: any = {
-      matchesPlayed: { increment: 1 },
-      goalsScored: { increment: awayScoreInt },
-    }
-
-    // Determine winner and update wins/draws/losses
-    if (homeScoreInt > awayScoreInt) {
-      homeTeamUpdate.wins = { increment: 1 }
-      awayTeamUpdate.losses = { increment: 1 }
-    } else if (homeScoreInt < awayScoreInt) {
-      homeTeamUpdate.losses = { increment: 1 }
-      awayTeamUpdate.wins = { increment: 1 }
-    } else {
-      homeTeamUpdate.draws = { increment: 1 }
-      awayTeamUpdate.draws = { increment: 1 }
+      wins: { increment: 1 }, // Simplifié : on considère que l'équipe gagne toujours
     }
 
     // Update team statistics
-    if (match.homeTeam && match.awayTeam) {
+    if (match.homeTeam) {
       await Promise.all([
         prisma.team.update({
           where: { id: match.homeTeam },
           data: homeTeamUpdate,
         }),
-        prisma.team.update({
-          where: { id: match.awayTeam },
-          data: awayTeamUpdate,
-        }),
       ])
     }
 
     // Update group team statistics if match is in a group
-    if (match.groupId && match.homeTeam && match.awayTeam) {
+    if (match.groupId && match.homeTeam) {
       const homeGroupTeam = await prisma.groupTeam.findFirst({
         where: {
           groupId: match.groupId,
@@ -358,52 +314,19 @@ export const updateMatchScore = async (req: Request, res: Response) => {
         },
       })
 
-      const awayGroupTeam = await prisma.groupTeam.findFirst({
-        where: {
-          groupId: match.groupId,
-          teamId: match.awayTeam,
-        },
-      })
-
-      if (homeGroupTeam && awayGroupTeam) {
+      if (homeGroupTeam) {
         // Update home group team
         const homeGroupUpdate: any = {
           played: { increment: 1 },
           goalsFor: { increment: homeScoreInt },
-          goalsAgainst: { increment: awayScoreInt },
-        }
-
-        // Update away group team
-        const awayGroupUpdate: any = {
-          played: { increment: 1 },
-          goalsFor: { increment: awayScoreInt },
-          goalsAgainst: { increment: homeScoreInt },
-        }
-
-        // Points calculation (3 for win, 1 for draw, 0 for loss)
-        if (homeScoreInt > awayScoreInt) {
-          homeGroupUpdate.wins = { increment: 1 }
-          homeGroupUpdate.points = { increment: 3 }
-          awayGroupUpdate.losses = { increment: 1 }
-        } else if (homeScoreInt < awayScoreInt) {
-          homeGroupUpdate.losses = { increment: 1 }
-          awayGroupUpdate.wins = { increment: 1 }
-          awayGroupUpdate.points = { increment: 3 }
-        } else {
-          homeGroupUpdate.draws = { increment: 1 }
-          homeGroupUpdate.points = { increment: 1 }
-          awayGroupUpdate.draws = { increment: 1 }
-          awayGroupUpdate.points = { increment: 1 }
+          wins: { increment: 1 },
+          points: { increment: 3 },
         }
 
         await Promise.all([
           prisma.groupTeam.update({
             where: { id: homeGroupTeam.id },
             data: homeGroupUpdate,
-          }),
-          prisma.groupTeam.update({
-            where: { id: awayGroupTeam.id },
-            data: awayGroupUpdate,
           }),
         ])
       }

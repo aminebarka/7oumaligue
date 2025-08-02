@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
 import { usePermissions } from '../hooks/usePermissions';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus, Trophy, Calendar, Users, Star, Award, Target, Zap } from 'lucide-react';
 import TournamentCard from '../components/Tournaments/TournamentCard';
 import CreateTournamentModal from '../components/Tournaments/CreateTournamentModal';
 import TournamentDrawModal from '../components/Tournaments/TournamentDrawModal';
@@ -48,7 +49,31 @@ const Tournaments: React.FC = () => {
 
   const logoOptions = ['🏆', '🥇', '⚽', '🏅', '🎯', '🔥', '⭐', '💎', '👑', '🌟'];
 
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, language } = useLanguage();
+  const isArabic = language === 'ar';
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
 
   useEffect(() => {
     if (!showCreateModal) {
@@ -283,30 +308,68 @@ const Tournaments: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-red-50 dark:from-slate-900 dark:via-orange-900 dark:to-red-900">
       <ReadOnlyBanner />
       {/* Debug component */}
       <DebugData />
       
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Tournois</h1>
-          <p className="text-gray-600 mt-1 md:mt-2 max-w-2xl">
-            Créez et gérez vos tournois de football
-          </p>
-        </div>
-        {canCreate && (
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="btn-primary text-white px-5 py-2.5 rounded-lg font-medium flex items-center space-x-2"
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-orange-600 via-red-600 to-pink-800">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-grid-white/10"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
           >
-            <Plus size={18} />
-            <span>Créer un tournoi</span>
-          </button>
-        )}
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-8 shadow-2xl"
+            >
+              <Trophy className="w-10 h-10 text-white" />
+            </motion.div>
+            
+            <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-white via-orange-100 to-white bg-clip-text text-transparent">
+                {isArabic ? '7OUMA البطولات' : '7OUMA Tournois'}
+              </span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8">
+              {isArabic 
+                ? 'أنشئ وأدر بطولات كرة القدم المثيرة'
+                : 'Créez et gérez vos tournois de football passionnants'
+              }
+            </p>
+            
+            {canCreate && (
+              <motion.button
+                onClick={() => setShowCreateModal(true)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center px-8 py-4 bg-white text-orange-600 font-bold text-lg rounded-2xl shadow-2xl hover:shadow-white/25 transition-all duration-300"
+              >
+                <Plus className="w-6 h-6 mr-2" />
+                {isArabic ? 'إنشاء بطولة جديدة' : 'Créer un tournoi'}
+              </motion.button>
+            )}
+          </motion.div>
+        </div>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Grille des tournois */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
         {tournaments.map((tournament) => (
           <TournamentCard
             key={tournament.id}
@@ -342,12 +405,39 @@ const Tournaments: React.FC = () => {
             }}
           />
         ))}
+        </motion.div>
+
+        {/* Message si aucun tournoi */}
+        {tournaments.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-20"
+          >
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-12 border border-white/20">
+              <Trophy size={80} className="mx-auto text-gray-400 mb-6" />
+              <h3 className="text-2xl font-bold text-gray-600 mb-4">
+                {isArabic ? 'لا توجد بطولات' : 'Aucun tournoi créé'}
+              </h3>
+              <p className="text-gray-500 text-lg">
+                {isArabic ? 'أنشئ بطولتك الأولى للبدء' : 'Créez votre premier tournoi pour commencer'}
+              </p>
+            </div>
+          </motion.div>
+        )}
       </div>
 
       {showPlayersModal && selectedTournamentId && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Joueurs du tournoi</h2>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl"
+          >
+            <h2 className="text-xl font-bold mb-6 text-gray-900">
+              {isArabic ? 'لاعبو البطولة' : 'Joueurs du tournoi'}
+            </h2>
             <ul className="space-y-4">
               {(Array.isArray(tournaments.find(t => t.id === selectedTournamentId)?.tournamentTeams)
                 ? tournaments.find(t => t.id === selectedTournamentId)?.tournamentTeams || []
@@ -370,12 +460,12 @@ const Tournaments: React.FC = () => {
               })}
             </ul>
             <button
-              className="mt-6 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+              className="mt-6 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-2xl hover:from-orange-600 hover:to-red-700 transition-all duration-300 font-semibold shadow-lg"
               onClick={() => setShowPlayersModal(false)}
             >
-              Fermer
+              {isArabic ? 'إغلاق' : 'Fermer'}
             </button>
-          </div>
+          </motion.div>
         </div>
       )}
 

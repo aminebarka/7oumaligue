@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { prisma } from '../database';
+import { prisma } from '../config/database';
 import { success, created, badRequest, notFound } from '../utils/apiResponse';
 
 export const createStadium = async (req: Request, res: Response) => {

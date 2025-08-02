@@ -30,6 +30,9 @@ import SocialWall from "./pages/SocialWall"
 import PaymentCenter from "./pages/PaymentCenter"
 import PlayerCards from "./pages/PlayerCards"
 import TournamentAI from "./pages/TournamentAI"
+import Store from "./pages/Store"
+import FreePlayers from "./pages/FreePlayers"
+import Sponsors from "./pages/Sponsors"
 import { useParams } from "react-router-dom"
 import "./App.css"
 
@@ -98,6 +101,9 @@ const AppContent: React.FC = () => {
                   {/* Public Routes */}
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/store" element={<Store />} />
+                  <Route path="/free-players" element={<FreePlayers />} />
+                  <Route path="/sponsors" element={<Sponsors />} />
 
                   {/* Read Only Routes - Accessible à tous les utilisateurs connectés */}
                   <Route

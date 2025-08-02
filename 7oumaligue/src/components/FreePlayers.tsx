@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Users, Filter, Star, MapPin, Clock, Trophy } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useNavigate } from 'react-router-dom'
 import Card3D from './ui/Card3D'
 
 interface FreePlayer {
@@ -18,6 +19,7 @@ interface FreePlayer {
 const FreePlayers: React.FC = () => {
   const { language } = useLanguage()
   const isArabic = language === 'ar'
+  const navigate = useNavigate()
   const [selectedPosition, setSelectedPosition] = useState<string>('all')
   const [selectedReputation, setSelectedReputation] = useState<string>('all')
 
@@ -30,7 +32,7 @@ const FreePlayers: React.FC = () => {
       reputation: 4.8,
       lastMatch: 'Il y a 2 jours',
       team: null,
-      location: 'Casablanca',
+      location: 'Douz',
       availability: 'available'
     },
     {
@@ -40,7 +42,7 @@ const FreePlayers: React.FC = () => {
       reputation: 4.5,
       lastMatch: 'Hier',
       team: null,
-      location: 'Rabat',
+      location: 'Douz',
       availability: 'available'
     },
     {
@@ -50,7 +52,7 @@ const FreePlayers: React.FC = () => {
       reputation: 4.2,
       lastMatch: 'Il y a 3 jours',
       team: null,
-      location: 'Marrakech',
+      location: 'Douz',
       availability: 'maybe'
     },
     {
@@ -60,7 +62,7 @@ const FreePlayers: React.FC = () => {
       reputation: 4.7,
       lastMatch: 'Aujourd\'hui',
       team: null,
-      location: 'Fès',
+      location: 'Douz',
       availability: 'available'
     }
   ]
@@ -231,7 +233,10 @@ const FreePlayers: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <button className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-red-600 transition-colors">
+          <button 
+            onClick={() => navigate('/free-players')}
+            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-semibold hover:from-orange-600 hover:to-red-600 transition-colors"
+          >
             {isArabic ? 'عرض جميع اللاعبين' : 'Voir tous les joueurs'}
           </button>
         </motion.div>

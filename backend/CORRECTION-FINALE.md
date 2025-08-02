@@ -55,8 +55,8 @@ Dans la console du navigateur, vous devriez voir :
 ✅ Stades récupérés via route publique
 📊 Nombre de stades: 5
 📋 Stades récupérés:
-  1. Stade Municipal de Casablanca - Casablanca
-  2. Complexe Sportif Al Amal - Rabat
+  1. Stade Municipal de Douz - Douz
+  2. Complexe Sportif Al Amal - Douz
   ...
 ```
 
@@ -64,8 +64,8 @@ Dans la console du navigateur, vous devriez voir :
 
 La liste déroulante devrait maintenant afficher :
 - "Sélectionner un stade" (option par défaut)
-- "Stade Municipal de Casablanca - Casablanca"
-- "Complexe Sportif Al Amal - Rabat"
+- "Stade Municipal de Douz - Douz"
+- "Complexe Sportif Al Amal - Douz"
 - etc.
 
 Au lieu de :

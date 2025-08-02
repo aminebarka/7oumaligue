@@ -260,7 +260,8 @@ router.get('/votes', async (req, res) => {
             where: { id: vote.targetId },
             include: {
               homeTeamRef: true,
-              awayTeamRef: true
+              group: true,
+              tournament: true,
             }
           })
         }

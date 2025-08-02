@@ -2,11 +2,13 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Trophy, Users, Calendar, TrendingUp, Star, Shield, Zap, Heart } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useNavigate } from 'react-router-dom'
 import Card3D from './ui/Card3D'
 
 const FeaturesSection: React.FC = () => {
   const { language } = useLanguage()
   const isArabic = language === 'ar'
+  const navigate = useNavigate()
 
   const features = [
     {
@@ -153,15 +155,21 @@ const FeaturesSection: React.FC = () => {
               </h3>
               <p className="text-xl mb-8 opacity-90">
                 {isArabic
-                  ? "انضم إلى مجتمع كرة القدم المصغرة الأكبر في المغرب"
-                  : "Rejoignez la plus grande communauté de football à 7 du Maroc"
+                  ? "انضم إلى مجتمع كرة القدم المصغرة الأكبر في تونس"
+                  : "Rejoignez la plus grande communauté de football à 7 du Tunisie"
                 }
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="px-8 py-4 bg-white text-orange-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300">
+                <button 
+                  onClick={() => navigate('/login')}
+                  className="px-8 py-4 bg-white text-orange-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300"
+                >
                   {isArabic ? "إنشاء حساب مجاني" : "Créer un compte gratuit"}
                 </button>
-                <button className="px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-orange-600 transition-all duration-300">
+                <button 
+                  onClick={() => navigate('/login')}
+                  className="px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-orange-600 transition-all duration-300"
+                >
                   {isArabic ? "اكتشف المزيد" : "Découvrir plus"}
                 </button>
               </div>

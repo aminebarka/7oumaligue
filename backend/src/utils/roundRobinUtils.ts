@@ -299,38 +299,46 @@ export class TournamentScheduler {
     })
 
     const teamStats = new Map<string, {
-      points: number,
+      played: number,
+      wins: number,
+      draws: number,
+      losses: number,
       goalsFor: number,
-      goalsAgainst: number
+      goalsAgainst: number,
+      points: number,
     }>()
 
     // Initialiser les stats pour toutes les équipes du groupe
     for (const groupTeam of group.groupTeams) {
-      teamStats.set(groupTeam.teamId, { points: 0, goalsFor: 0, goalsAgainst: 0 })
+      teamStats.set(groupTeam.teamId, { played: 0, wins: 0, draws: 0, losses: 0, goalsFor: 0, goalsAgainst: 0, points: 0 })
     }
 
     // Calculer les stats
     for (const match of matches) {
-      if (match.homeScore !== null && match.awayScore !== null && match.homeTeam && match.awayTeam) {
-        const homeStats = teamStats.get(match.homeTeam)
-        const awayStats = teamStats.get(match.awayTeam)
+      if (match.homeScore !== null && match.homeTeam) {
+        const homeStats = teamStats.get(match.homeTeam) || {
+          played: 0,
+          wins: 0,
+          draws: 0,
+          losses: 0,
+          goalsFor: 0,
+          goalsAgainst: 0,
+          points: 0,
+        };
 
-        if (homeStats && awayStats) {
-          homeStats.goalsFor += match.homeScore
-          homeStats.goalsAgainst += match.awayScore
-          awayStats.goalsFor += match.awayScore
-          awayStats.goalsAgainst += match.homeScore
+        homeStats.played += 1;
+        homeStats.goalsFor += match.homeScore;
+        homeStats.goalsAgainst += 0; // Pas d'équipe adverse
 
-          // Points (3-1-0)
-          if (match.homeScore > match.awayScore) {
-            homeStats.points += 3
-          } else if (match.homeScore < match.awayScore) {
-            awayStats.points += 3
-          } else {
-            homeStats.points += 1
-            awayStats.points += 1
-          }
+        if (match.homeScore > 0) {
+          homeStats.wins += 1;
+          homeStats.points += 3;
+        } else {
+          homeStats.draws += 1;
+          homeStats.points += 1;
         }
+
+        teamStats.set(match.homeTeam, homeStats);
       }
     }
 

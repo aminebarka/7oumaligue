@@ -46,7 +46,7 @@ async function diagnosticTournament400() {
         endDate: "2024-01-20",
         numberOfGroups: 2,
         teamsPerGroup: 4,
-        stadium: "Stade Municipal de Casablanca",
+        stadium: "Stade Municipal de Douz",
         logo: "🏆",
         maxTeams: 8,
         registrationDeadline: "2024-01-10",

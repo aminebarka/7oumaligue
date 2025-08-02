@@ -56,8 +56,8 @@ Puis :
 📋 Type de données: object
 📋 Est un tableau: true
 📋 Stades récupérés:
-  1. Stade Municipal de Casablanca - Casablanca (ID: 1)
-  2. Complexe Sportif Al Amal - Rabat (ID: 2)
+  1. Stade Municipal de Douz - Douz (ID: 1)
+  2. Complexe Sportif Al Amal - Douz (ID: 2)
   ...
 ```
 
@@ -72,10 +72,10 @@ Puis :
 ### Liste Déroulante Devrait Afficher :
 ```
 Sélectionner un stade
-Stade Municipal de Casablanca - Casablanca
-Complexe Sportif Al Amal - Rabat
-Stade Prince Moulay Abdellah - Rabat
-Complexe Sportif Mohammed V - Casablanca
+Stade Municipal de Douz - Douz
+Complexe Sportif Al Amal - Douz
+Stade Prince Moulay Abdellah - Douz
+Complexe Sportif Mohammed V - Douz
 Stade Ibn Batouta - Tanger
 ```
 
@@ -119,8 +119,8 @@ node quick-stadium-test.js
 ✅ Route publique fonctionne
 📊 Nombre de stades: 5
 📋 Stades disponibles:
-  1. Stade Municipal de Casablanca - Casablanca
-  2. Complexe Sportif Al Amal - Rabat
+  1. Stade Municipal de Douz - Douz
+  2. Complexe Sportif Al Amal - Douz
   ...
 ```
 

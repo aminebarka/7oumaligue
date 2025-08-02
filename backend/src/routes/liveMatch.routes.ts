@@ -5,7 +5,7 @@ import {
   togglePauseMatch,
   endLiveMatch,
   updateMatchTime,
-  updateLiveScore,
+  updateLiveMatchScore,
   addMatchEvent,
   deleteMatchEvent,
   getMatchEvents,
@@ -45,7 +45,6 @@ const eventValidation = [
 // Score validation
 const scoreValidation = [
   body("homeScore").isInt({ min: 0, max: 50 }).withMessage("Score domicile invalide"),
-  body("awayScore").isInt({ min: 0, max: 50 }).withMessage("Score visiteur invalide"),
 ];
 
 // Time validation
@@ -62,7 +61,7 @@ router.post("/:matchId/start", authenticateToken, requireAdminOrCoach, idValidat
 router.post("/:matchId/pause", authenticateToken, requireAdminOrCoach, idValidation, validateRequest, togglePauseMatch);
 router.post("/:matchId/end", authenticateToken, requireAdminOrCoach, idValidation, validateRequest, endLiveMatch);
 router.put("/:matchId/time", authenticateToken, requireAdminOrCoach, idValidation, timeValidation, validateRequest, updateMatchTime);
-router.put("/:matchId/score", authenticateToken, requireAdminOrCoach, idValidation, scoreValidation, validateRequest, updateLiveScore);
+router.put("/:matchId/score", authenticateToken, requireAdminOrCoach, idValidation, scoreValidation, validateRequest, updateLiveMatchScore);
 router.post("/:matchId/events", authenticateToken, requireAdminOrCoach, idValidation, eventValidation, validateRequest, addMatchEvent);
 router.delete("/events/:eventId", authenticateToken, requireAdminOrCoach, deleteMatchEvent);
 

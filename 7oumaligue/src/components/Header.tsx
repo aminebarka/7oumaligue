@@ -5,7 +5,7 @@ import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import { useLanguage } from "../contexts/LanguageContext"
-import { Menu, X, Users, Trophy, Calendar, BarChart3, Globe, Shield, UserCheck, User, MapPin } from "lucide-react"
+import { Menu, X, Users, Trophy, Calendar, BarChart3, Globe, Shield, UserCheck, User, MapPin, ShoppingBag } from "lucide-react"
 import ThemeToggle from "./ThemeToggle"
 import LogoWithText from "./LogoWithText"
 import Logo3D from "./Logo3D"
@@ -35,6 +35,7 @@ const Header: React.FC = () => {
     { name: t("nav.matches"), href: "/matches", icon: Calendar },
     { name: language === 'fr' ? 'Stades' : 'الملاعب', href: "/stadiums", icon: MapPin },
     { name: t("nav.stats"), href: "/stats", icon: BarChart3 },
+    { name: language === 'fr' ? 'Store' : 'المتجر', href: "/store", icon: ShoppingBag },
   ]
 
   // Add admin link if user is admin
@@ -50,10 +51,12 @@ const Header: React.FC = () => {
     }>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 px-2">
-          {/* Logo */}
-          <Link to="/" className="flex items-center min-w-0">
-            <Logo3D size="md" variant="header" />
-          </Link>
+          {/* Logo - Position ajustée */}
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center min-w-0 ml-4">
+              <Logo3D size="md" variant="header" />
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           {user && (

@@ -29,10 +29,10 @@ async function fixStadiumError() {
       
       const testStadiums = [
         {
-          name: "Stade Municipal de Casablanca",
+          name: "Stade Municipal de Douz",
           address: "123 Avenue Mohammed V",
-          city: "Casablanca",
-          region: "Casablanca-Settat",
+          city: "Douz",
+          region: "Douz-Settat",
           capacity: 5000,
           fieldCount: 3,
           fieldTypes: ["5v5", "7v7", "11v11"],
@@ -47,8 +47,8 @@ async function fixStadiumError() {
         {
           name: "Complexe Sportif Al Amal",
           address: "456 Boulevard Hassan II",
-          city: "Rabat",
-          region: "Rabat-Salé-Kénitra",
+          city: "Douz",
+          region: "Douz-Salé-Kénitra",
           capacity: 3000,
           fieldCount: 2,
           fieldTypes: ["5v5", "7v7"],

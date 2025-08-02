@@ -963,7 +963,7 @@ const ManageTournamentModal: React.FC<ManageTournamentModalProps> = ({
                   value={tournamentSettings.stadium}
                   onChange={(e) => setTournamentSettings({...tournamentSettings, stadium: e.target.value})}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                  placeholder="Ex: Stade Municipal de Casablanca"
+                  placeholder="Ex: Stade Municipal de Douz"
                 />
               </div>
               

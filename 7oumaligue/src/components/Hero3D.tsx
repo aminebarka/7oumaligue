@@ -2,9 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Users, Sparkles, ArrowRight, Play } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 
 const Hero3D: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isArabic = language === 'ar';
+  const navigate = useNavigate();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -144,11 +147,11 @@ const Hero3D: React.FC = () => {
             variants={itemVariants}
           >
             <span className="bg-gradient-to-r from-[#4CAF50] via-[#FFEB3B] to-[#4CAF50] bg-clip-text text-transparent">
-              Crée. Joue. Partage.
+              {isArabic ? 'أنشئ. العب. شارك.' : 'Crée. Joue. Partage.'}
             </span>
             <br />
             <span className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
-              Ligue intelligente pour mini-foot.
+              {isArabic ? 'دوري ذكي لكرة القدم المصغرة.' : 'Ligue intelligente pour mini-foot.'}
             </span>
           </motion.h1>
 
@@ -157,7 +160,10 @@ const Hero3D: React.FC = () => {
             className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed"
             variants={itemVariants}
           >
-            Organise facilement des tournois locaux de mini-foot avec outils modernes, stats, et affichage en direct.
+            {isArabic 
+              ? 'نظم بسهولة بطولات محلية لكرة القدم المصغرة مع أدوات حديثة وإحصائيات وعرض مباشر.'
+              : 'Organise facilement des tournois locaux de mini-foot avec outils modernes, stats, et affichage en direct.'
+            }
           </motion.p>
 
           {/* CTA Buttons - Optimisés */}
@@ -167,26 +173,28 @@ const Hero3D: React.FC = () => {
           >
             {/* Primary CTA - Jaune vif */}
             <motion.button
+              onClick={() => navigate('/tournaments')}
               className="group relative px-8 py-4 bg-[#FFC107] text-black font-bold text-lg rounded-2xl shadow-xl hover:shadow-[#FFC107]/25 transition-all duration-300 transform hover:scale-105 hover:bg-[#FF9800]"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <div className="flex items-center space-x-3">
                 <Sparkles className="w-6 h-6" />
-                <span>Créer un tournoi</span>
+                <span>{isArabic ? 'إنشاء بطولة' : 'Créer un tournoi'}</span>
                 <Trophy className="w-6 h-6" />
               </div>
             </motion.button>
 
             {/* Secondary CTA - Blanc avec bord cyan */}
             <motion.button
+              onClick={() => navigate('/tournaments')}
               className="group px-8 py-4 border-2 border-[#00BCD4] text-white font-bold text-lg rounded-2xl hover:bg-[#00BCD4]/10 transition-all duration-300 transform hover:scale-105"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <div className="flex items-center space-x-3">
                 <Users className="w-6 h-6" />
-                <span>Explorer la plateforme</span>
+                <span>{isArabic ? 'استكشف المنصة' : 'Explorer la plateforme'}</span>
                 <motion.div
                   className="w-6 h-6"
                   animate={{ x: [0, 5, 0] }}

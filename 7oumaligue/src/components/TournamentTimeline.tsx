@@ -2,10 +2,12 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Users, Shuffle, Calendar, BarChart3, FileText, Tv } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useNavigate } from 'react-router-dom'
 
 const TournamentTimeline: React.FC = () => {
   const { language } = useLanguage()
   const isArabic = language === 'ar'
+  const navigate = useNavigate()
 
   const steps = [
     {
@@ -236,6 +238,7 @@ const TournamentTimeline: React.FC = () => {
           className="text-center mt-16"
         >
                      <motion.button 
+             onClick={() => navigate('/tournaments')}
              className="group relative px-12 py-6 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 hover:from-blue-500 hover:via-purple-500 hover:to-blue-600 text-white font-black text-xl rounded-3xl shadow-2xl hover:shadow-[0_25px_50px_rgba(59,130,246,0.4)] transition-all duration-500 transform hover:scale-110 border-2 border-white/30 overflow-hidden"
             whileHover={{ 
               scale: 1.05,

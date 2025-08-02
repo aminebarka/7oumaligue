@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Star, Trophy, Target, Zap, Heart, Eye } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useNavigate } from 'react-router-dom'
 
 interface PlayerCard {
   id: string
@@ -25,6 +26,7 @@ interface PlayerCard {
 const PlayerCardsFIFA: React.FC = () => {
   const { language } = useLanguage()
   const isArabic = language === 'ar'
+  const navigate = useNavigate()
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null)
 
   // Mock data - cartes joueurs style FIFA
@@ -171,11 +173,11 @@ const PlayerCardsFIFA: React.FC = () => {
                   <div className="mb-8">
                     <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
                       <span className="block bg-gradient-to-r from-green-400 to-yellow-400 bg-clip-text text-transparent">
-                        Offrez-vous le rêve
+                        {isArabic ? 'احصل على الحلم' : 'Offrez-vous le rêve'}
                       </span>
-                      <span className="block text-white">d'une carte FUT</span>
+                      <span className="block text-white">{isArabic ? 'لبطاقة FUT' : 'd\'une carte FUT'}</span>
                       <span className="block bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-xl inline-block mt-4 text-2xl font-bold shadow-lg">
-                        personnalisée
+                        {isArabic ? 'مخصصة' : 'personnalisée'}
                       </span>
                     </h3>
                   </div>
@@ -190,6 +192,7 @@ const PlayerCardsFIFA: React.FC = () => {
                                      <div className="flex flex-col sm:flex-row gap-6">
                      {/* Bouton Principal */}
                      <motion.button
+                       onClick={() => navigate('/store')}
                        whileHover={{ 
                          scale: 1.05,
                          boxShadow: "0 20px 40px rgba(34, 197, 94, 0.3)"
@@ -212,6 +215,7 @@ const PlayerCardsFIFA: React.FC = () => {
                      
                      {/* Bouton Secondaire */}
                      <motion.button
+                       onClick={() => navigate('/store')}
                        whileHover={{ 
                          scale: 1.05,
                          boxShadow: "0 10px 30px rgba(255, 255, 255, 0.1)"
@@ -262,11 +266,11 @@ const PlayerCardsFIFA: React.FC = () => {
                       <div className="flex justify-center items-center gap-4 text-gray-400 text-sm">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span>Photo personnalisée</span>
+                          <span>{isArabic ? 'صورة مخصصة' : 'Photo personnalisée'}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>Stats réelles</span>
+                          <span>{isArabic ? 'إحصائيات حقيقية' : 'Stats réelles'}</span>
                         </div>
                       </div>
                     </div>

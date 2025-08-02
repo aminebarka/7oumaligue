@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -47,7 +48,31 @@ const roundTypes = [
 const Matches: React.FC = () => {
   const { user } = useAuth();
   const { matches, teams, players, tournaments, addMatch, updateMatchScore, loadData, generateDraw } = useData();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, language } = useLanguage();
+  const isArabic = language === 'ar';
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const
+      }
+    }
+  };
   
   const [activeTab, setActiveTab] = useState('all');
   const [activeRound, setActiveRound] = useState<'all' | 'groupes' | 'quarters' | 'semis' | 'finale'>('all');
@@ -630,66 +655,75 @@ const Matches: React.FC = () => {
                 <Trophy size={32} className="text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Matches du Tournoi
+                <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  {isArabic ? '7OUMA المباريات' : '7OUMA Matches'}
                 </h1>
-                <p className="text-gray-600 mt-1">Gestion et suivi des rencontres</p>
+                <p className="text-gray-600 mt-2 text-lg">
+                  {isArabic ? 'إدارة ومتابعة المباريات' : 'Gestion et suivi des rencontres'}
+                </p>
               </div>
             </div>
             
             {user.role === 'admin' && (
-              <button
+              <motion.button
                 onClick={() => setShowCreateModal(true)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 flex items-center space-x-3 shadow-2xl hover:shadow-3xl"
               >
-                <Plus size={20} />
-                <span>Nouveau Match</span>
-              </button>
+                <Plus size={24} />
+                <span>{isArabic ? 'مباراة جديدة' : 'Nouveau Match'}</span>
+              </motion.button>
             )}
           </div>
 
           {/* Statistiques modernes */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-6 text-white">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-4 gap-6"
+          >
+            <motion.div variants={itemVariants} className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-6 text-white hover:scale-105 transition-transform duration-300">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-blue-100 text-sm font-medium">Total</p>
+                  <p className="text-blue-100 text-sm font-medium">{isArabic ? 'المجموع' : 'Total'}</p>
                   <p className="text-3xl font-bold">{tournamentProgress().total}</p>
                 </div>
                 <BarChart3 size={32} className="text-blue-200" />
               </div>
-            </div>
+            </motion.div>
             
-            <div className="bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl p-6 text-white">
+            <motion.div variants={itemVariants} className="bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl p-6 text-white hover:scale-105 transition-transform duration-300">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-green-100 text-sm font-medium">Terminés</p>
+                  <p className="text-green-100 text-sm font-medium">{isArabic ? 'منتهية' : 'Terminés'}</p>
                   <p className="text-3xl font-bold">{tournamentProgress().completed}</p>
                 </div>
                 <CheckCircle size={32} className="text-green-200" />
               </div>
-            </div>
+            </motion.div>
             
-            <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl p-6 text-white">
+            <motion.div variants={itemVariants} className="bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl p-6 text-white hover:scale-105 transition-transform duration-300">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-red-100 text-sm font-medium">En Direct</p>
+                  <p className="text-red-100 text-sm font-medium">{isArabic ? 'مباشر' : 'En Direct'}</p>
                   <p className="text-3xl font-bold">{tournamentProgress().live}</p>
                 </div>
                 <Zap size={32} className="text-red-200" />
               </div>
-            </div>
+            </motion.div>
             
-            <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-6 text-white">
+            <motion.div variants={itemVariants} className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-6 text-white hover:scale-105 transition-transform duration-300">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-100 text-sm font-medium">Progression</p>
+                  <p className="text-purple-100 text-sm font-medium">{isArabic ? 'التقدم' : 'Progression'}</p>
                   <p className="text-3xl font-bold">{tournamentProgress().percentage}%</p>
                 </div>
                 <TrendingUp size={32} className="text-purple-200" />
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 

@@ -16,8 +16,7 @@ router.get('/tournaments/:id/tv-feed', async (req, res) => {
         teams: true,
         matches: {
           include: {
-            homeTeamRef: true,
-            awayTeamRef: true
+            homeTeamRef: true
           },
           orderBy: {
             date: 'asc'
@@ -37,8 +36,7 @@ router.get('/tournaments/:id/tv-feed', async (req, res) => {
         status: 'in_progress'
       },
       include: {
-        homeTeamRef: true,
-        awayTeamRef: true
+        homeTeamRef: true
       }
     })
 
@@ -52,8 +50,7 @@ router.get('/tournaments/:id/tv-feed', async (req, res) => {
         }
       },
       include: {
-        homeTeamRef: true,
-        awayTeamRef: true
+        homeTeamRef: true
       },
       orderBy: {
         date: 'asc'
@@ -93,8 +90,7 @@ router.get('/tournaments/:id/tv-data', async (req, res) => {
         status: 'in_progress'
       },
       include: {
-        homeTeamRef: true,
-        awayTeamRef: true
+        homeTeamRef: true
       }
     })
 
@@ -107,8 +103,7 @@ router.get('/tournaments/:id/tv-data', async (req, res) => {
         }
       },
       include: {
-        homeTeamRef: true,
-        awayTeamRef: true
+        homeTeamRef: true
       },
       orderBy: {
         date: 'asc'
@@ -345,12 +340,6 @@ function generateTVHTML(tournament: any, currentMatch: any, upcomingMatches: any
                                 <div class="team-name">${currentMatch.homeTeamRef?.name || 'Équipe A'}</div>
                             </div>
                             <div class="score">${currentMatch.homeScore}</div>
-                            <div class="vs">VS</div>
-                            <div class="score">${currentMatch.awayScore}</div>
-                            <div class="team">
-                                <div class="team-logo">${currentMatch.awayTeamRef?.logo || '⚽'}</div>
-                                <div class="team-name">${currentMatch.awayTeamRef?.name || 'Équipe B'}</div>
-                            </div>
                         </div>
                         <div class="match-info">
                             <div class="live-indicator">EN DIRECT</div>
@@ -371,8 +360,6 @@ function generateTVHTML(tournament: any, currentMatch: any, upcomingMatches: any
                     <div class="upcoming-match">
                         <div class="upcoming-teams">
                             <span>${match.homeTeamRef?.name || 'Équipe A'}</span>
-                            <span>VS</span>
-                            <span>${match.awayTeamRef?.name || 'Équipe B'}</span>
                         </div>
                         <div class="upcoming-time">${new Date(match.date).toLocaleString('fr-FR', { 
                             hour: '2-digit', 

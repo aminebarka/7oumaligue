@@ -51,70 +51,26 @@ app.get('/api/test', (req, res) => {
   res.json({ success: true, message: 'Serveur fonctionnel' });
 });
 
-// Route simple pour les stades - AVANT LES AUTRES ROUTES
-app.get('/api/stadiums', async (req, res) => {
-  try {
-    console.log('🔍 Tentative de récupération des stades...');
-    
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
-    
-    const stadiums = await prisma.stadium.findMany({
-      select: {
-        id: true,
-        name: true,
-        address: true,
-        city: true,
-        region: true,
-        capacity: true,
-        fieldCount: true,
-        fieldTypes: true,
-        amenities: true,
-        description: true,
-        isPartner: true,
-      },
-      orderBy: {
-        name: 'asc',
-      },
-    });
-    
-    console.log(`✅ ${stadiums.length} stades récupérés`);
-    
-    await prisma.$disconnect();
-    
-    res.json({ 
-      success: true, 
-      data: stadiums,
-      message: 'Stades récupérés avec succès'
-    });
-  } catch (error: any) {
-    console.error('❌ Erreur récupération stades:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Erreur lors de la récupération des stades',
-      error: error.message
-    });
-  }
-});
-
-// Route de test simple pour les stades
-app.get('/api/stadiums/test', (req, res) => {
+// Route de test simple pour vérifier les headers
+app.get('/api/debug/headers', (req, res) => {
   res.json({ 
     success: true, 
-    message: 'Route des stades accessible',
-    data: [
-      { id: 1, name: "Stade Test", city: "Test City" }
-    ]
+    message: 'Headers reçus',
+    headers: {
+      authorization: req.headers.authorization ? 'Présent' : 'Absent',
+      'content-type': req.headers['content-type'],
+      'user-agent': req.headers['user-agent']
+    }
   });
 });
 
-// Route publique pour les stades (pour tests)
-app.get('/api/stadiums/public', async (req, res) => {
+// Route de test temporaire pour les stades (sans authentification)
+app.get('/api/stadiums/test', async (req, res) => {
   try {
+    console.log('🔍 Test de récupération des stades...');
+    
     const { PrismaClient } = require('@prisma/client');
     const prisma = new PrismaClient();
-    
-    console.log('🔍 Tentative de récupération des stades...');
     
     const stadiums = await prisma.stadium.findMany({
       select: {
@@ -142,13 +98,13 @@ app.get('/api/stadiums/public', async (req, res) => {
     res.json({ 
       success: true, 
       data: stadiums,
-      message: 'Stades récupérés avec succès'
+      message: 'Test des stades réussi'
     });
   } catch (error: any) {
-    console.error('❌ Erreur récupération stades:', error);
+    console.error('❌ Erreur test stades:', error);
     res.status(500).json({ 
       success: false, 
-      message: 'Erreur lors de la récupération des stades',
+      message: 'Erreur lors du test des stades',
       error: error.message
     });
   }
@@ -165,7 +121,7 @@ app.use('/api', advancedRoutes);
 app.use('/api', tvRoutes);
 app.use('/api', drawRoutes);
 app.use('/api', playerCardRoutes);
-app.use('/api', stadiumRoutes);
+app.use('/api/stadiums', stadiumRoutes);
 app.use('/api', communityRoutes);
 
 // Route de debug pour voir les routes

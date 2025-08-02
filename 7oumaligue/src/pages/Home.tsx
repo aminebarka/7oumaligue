@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useNavigate } from 'react-router-dom'
 import { Trophy, Users, Calendar, TrendingUp, Star, Shield, Target, UserCheck, Building2, Briefcase, BarChart3 } from 'lucide-react'
 import Hero3D from '../components/Hero3D'
 import TournamentTimeline from '../components/TournamentTimeline'
@@ -11,14 +12,18 @@ import FreePlayers from '../components/FreePlayers'
 import MobileApp from '../components/MobileApp'
 import Footer from '../components/Footer'
 
+
 const Home: React.FC = () => {
   const { language } = useLanguage()
   const isArabic = language === 'ar'
+  const navigate = useNavigate()
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* 1. Hero Section 3D */}
       <Hero3D />
+
+
 
       {/* 3. Timeline "Crée ton tournoi" */}
       <TournamentTimeline />
@@ -261,7 +266,10 @@ const Home: React.FC = () => {
                   : 'Exposez votre logo sur les écrans TV et les statistiques. Associez votre marque au sport local.'
                 }
               </p>
-              <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-colors">
+              <button 
+                onClick={() => navigate('/sponsors')}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-colors"
+              >
                 {isArabic ? 'اصبح راعياً' : 'Devenir sponsor'}
               </button>
             </motion.div>

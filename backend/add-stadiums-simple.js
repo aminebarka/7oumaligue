@@ -21,22 +21,22 @@ async function addStadiums() {
     // Ajouter des stades de test
     const stadiums = [
       {
-        name: "Stade Municipal de Casablanca",
+        name: "Stade Municipal de Douz",
         address: "Boulevard Mohammed V",
-        city: "Casablanca",
-        region: "Casablanca-Settat",
+        city: "Douz",
+        region: "Douz-Settat",
         capacity: "45000",
         fieldCount: "2",
         fieldTypes: ["Football 11", "Football 7"],
         amenities: ["Parking", "Vestiaires", "Éclairage"],
-        description: "Stade principal de Casablanca",
+        description: "Stade principal de Douz",
         isPartner: true
       },
       {
         name: "Complexe Sportif Al Amal",
         address: "Route de Salé",
-        city: "Rabat",
-        region: "Rabat-Salé-Kénitra",
+        city: "Douz",
+        region: "Douz-Salé-Kénitra",
         capacity: "12000",
         fieldCount: "3",
         fieldTypes: ["Football 11", "Football 7", "Football 5"],
@@ -47,25 +47,25 @@ async function addStadiums() {
       {
         name: "Stade Prince Moulay Abdellah",
         address: "Avenue Hassan II",
-        city: "Rabat",
-        region: "Rabat-Salé-Kénitra",
+        city: "Douz",
+        region: "Douz-Salé-Kénitra",
         capacity: "52000",
         fieldCount: "1",
         fieldTypes: ["Football 11"],
         amenities: ["Parking", "Vestiaires", "Tribunes"],
-        description: "Stade national du Maroc",
+        description: "Stade national du Tunisie",
         isPartner: false
       },
       {
         name: "Complexe Sportif Mohammed V",
         address: "Boulevard Zerktouni",
-        city: "Casablanca",
-        region: "Casablanca-Settat",
+        city: "Douz",
+        region: "Douz-Settat",
         capacity: "67000",
         fieldCount: "1",
         fieldTypes: ["Football 11"],
         amenities: ["Parking", "Vestiaires", "Tribunes"],
-        description: "Grand stade de Casablanca",
+        description: "Grand stade de Douz",
         isPartner: false
       },
       {

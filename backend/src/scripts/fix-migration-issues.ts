@@ -161,8 +161,7 @@ async function fixMigrationIssues() {
               venue: 'Stade Principal',
               homeTeam: teams[0].id,
               awayTeam: teams[1].id,
-              homeScore: 2,
-              awayScore: 1,
+              homeScore: 1,
               status: 'completed',
               tournamentId: tournaments[0].id
             }

@@ -13,6 +13,7 @@
 /* RTL Support */
 [dir="rtl"] {
   text-align: right;
+  direction: rtl;
 }
 
 [dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
@@ -36,6 +37,40 @@
 
 [dir="rtl"] .text-right {
   text-align: left;
+}
+
+/* RTL flexbox styles */
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .justify-start {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .justify-end {
+  justify-content: flex-start;
+}
+
+/* RTL margin and padding */
+[dir="rtl"] .mr-4 {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+[dir="rtl"] .pr-4 {
+  padding-right: 0;
+  padding-left: 1rem;
+}
+
+[dir="rtl"] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
 }
 
 /* RTL table styles */
@@ -76,6 +111,33 @@
 [dir="rtl"] .space-x-2 > * + * {
   margin-left: 0;
   margin-right: 0.5rem;
+}
+
+/* RTL grid styles */
+[dir="rtl"] .grid-cols-1 > *:first-child {
+  order: 1;
+}
+
+[dir="rtl"] .grid-cols-1 > *:last-child {
+  order: 0;
+}
+
+/* RTL specific component styles */
+[dir="rtl"] .hero-container {
+  direction: rtl;
+}
+
+[dir="rtl"] .hero-text {
+  text-align: right;
+}
+
+[dir="rtl"] .hero-buttons {
+  justify-content: flex-end;
+}
+
+/* Arabic font for RTL */
+[dir="rtl"] {
+  font-family: 'Noto Sans Arabic', sans-serif;
 }
 
 /* Hero Section custom styles - Optimisé 2025 */

@@ -31,7 +31,6 @@ router.get("/all", authenticateToken, async (req, res) => {
       prisma.match.findMany({
         include: {
           homeTeamRef: true,
-          awayTeamRef: true,
           group: true,
           tournament: true,
         },

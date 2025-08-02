@@ -19,7 +19,6 @@ export const getLiveMatchState = async (req: Request, res: Response) => {
         match: {
           include: {
             homeTeamRef: true,
-            awayTeamRef: true,
             group: true,
             tournament: true,
           },
@@ -42,7 +41,6 @@ export const getLiveMatchState = async (req: Request, res: Response) => {
       where: { id: matchId },
       include: {
         homeTeamRef: true,
-        awayTeamRef: true,
         group: true,
         tournament: true,
       },
@@ -60,7 +58,6 @@ export const getLiveMatchState = async (req: Request, res: Response) => {
       isPaused: false,
       matchTime: 0,
       homeScore: match.homeScore || 0,
-      awayScore: match.awayScore || 0,
       match,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -78,7 +75,6 @@ export const getLiveMatchState = async (req: Request, res: Response) => {
         where: { id: matchId },
         include: {
           homeTeamRef: true,
-          awayTeamRef: true,
           group: true,
           tournament: true,
         },
@@ -95,13 +91,11 @@ export const getLiveMatchState = async (req: Request, res: Response) => {
           isPaused: false,
           matchTime: 0,
           homeScore: match.homeScore || 0,
-          awayScore: match.awayScore || 0,
         },
         include: {
           match: {
             include: {
               homeTeamRef: true,
-              awayTeamRef: true,
               group: true,
               tournament: true,
             },
@@ -155,7 +149,6 @@ export const startLiveMatch = async (req: Request, res: Response) => {
         isPaused: false,
         matchTime: 0,
         homeScore: match.homeScore || 0,
-        awayScore: match.awayScore || 0,
       },
       include: {
         match: {
@@ -178,7 +171,6 @@ export const startLiveMatch = async (req: Request, res: Response) => {
       isPaused: false,
       matchTime: 0,
       homeScore: match.homeScore || 0,
-      awayScore: match.awayScore || 0,
       match,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -229,7 +221,6 @@ export const togglePauseMatch = async (req: Request, res: Response) => {
       where: { id: matchId },
       include: {
         homeTeamRef: true,
-        awayTeamRef: true,
         group: true,
         tournament: true,
       },
@@ -246,7 +237,6 @@ export const togglePauseMatch = async (req: Request, res: Response) => {
       isPaused: true, // Toggle temporaire
       matchTime: 0,
       homeScore: match.homeScore || 0,
-      awayScore: match.awayScore || 0,
       match,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -298,7 +288,6 @@ export const endLiveMatch = async (req: Request, res: Response) => {
       where: { id: matchId },
       include: {
         homeTeamRef: true,
-        awayTeamRef: true,
         group: true,
         tournament: true,
       },
@@ -315,7 +304,6 @@ export const endLiveMatch = async (req: Request, res: Response) => {
       isPaused: false,
       matchTime: 0,
       homeScore: match.homeScore || 0,
-      awayScore: match.awayScore || 0,
       match,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -367,7 +355,6 @@ export const updateMatchTime = async (req: Request, res: Response) => {
       where: { id: matchId },
       include: {
         homeTeamRef: true,
-        awayTeamRef: true,
         group: true,
         tournament: true,
       },
@@ -384,7 +371,6 @@ export const updateMatchTime = async (req: Request, res: Response) => {
       isPaused: false,
       matchTime: parseInt(matchTime),
       homeScore: match.homeScore || 0,
-      awayScore: match.awayScore || 0,
       match,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -398,46 +384,15 @@ export const updateMatchTime = async (req: Request, res: Response) => {
 };
 
 // Mettre à jour le score du match
-export const updateLiveScore = async (req: Request, res: Response) => {
+export const updateLiveMatchScore = async (req: Request, res: Response) => {
   const { matchId } = req.params;
-  const { homeScore, awayScore } = req.body;
+  const { homeScore } = req.body;
 
   try {
-    // TODO: Activer quand les modèles Prisma seront générés
-    /*
-    const liveState = await prisma.liveMatchState.findUnique({
-      where: { matchId },
-    });
-
-    if (!liveState) {
-      return notFound(res, "Match en direct non trouvé");
-    }
-
-    const updatedState = await prisma.liveMatchState.update({
-      where: { matchId },
-      data: {
-        homeScore: parseInt(homeScore),
-        awayScore: parseInt(awayScore),
-      },
-      include: {
-        match: {
-          include: {
-            homeTeamRef: true,
-            awayTeamRef: true,
-            group: true,
-            tournament: true,
-          },
-        },
-      },
-    });
-    */
-
-    // Version temporaire
     const match = await prisma.match.findUnique({
       where: { id: matchId },
       include: {
         homeTeamRef: true,
-        awayTeamRef: true,
         group: true,
         tournament: true,
       },
@@ -447,35 +402,37 @@ export const updateLiveScore = async (req: Request, res: Response) => {
       return notFound(res, "Match non trouvé");
     }
 
-    // Mettre à jour le score dans le match principal
-    await prisma.match.update({
+    // Update match score
+    const updatedMatch = await prisma.match.update({
       where: { id: matchId },
       data: {
         homeScore: parseInt(homeScore),
-        awayScore: parseInt(awayScore),
+        status: "completed",
+      },
+      include: {
+        homeTeamRef: true,
+        group: true,
+        tournament: true,
       },
     });
 
-    const updatedState = {
-      id: `temp-${matchId}`,
-      matchId,
-      isLive: true,
-      isPaused: false,
-      matchTime: 0,
-      homeScore: parseInt(homeScore),
-      awayScore: parseInt(awayScore),
-      match: {
-        ...match,
+    // Update live match state
+    await prisma.liveMatchState.upsert({
+      where: { matchId },
+      update: {
         homeScore: parseInt(homeScore),
-        awayScore: parseInt(awayScore),
+        updatedAt: new Date(),
       },
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+      create: {
+        matchId,
+        homeScore: parseInt(homeScore),
+        updatedAt: new Date(),
+      },
+    });
 
-    return success(res, updatedState, "Score mis à jour");
+    return success(res, updatedMatch, "Score mis à jour avec succès");
   } catch (error) {
-    console.error("Erreur lors de la mise à jour du score:", error);
+    console.error("Erreur mise à jour score live:", error);
     return badRequest(res, "Erreur lors de la mise à jour du score");
   }
 };

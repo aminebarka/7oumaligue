@@ -411,12 +411,22 @@ export const generateMatches = async (req: Request, res: Response) => {
 
       console.log(`📅 Jour ${matchSchedule.matchNumber}: ${matchSchedule.homeTeam} vs ${matchSchedule.awayTeam} (${matchSchedule.round})`)
 
+      // Récupérer les informations des équipes pour les relations
+      const homeTeam = await prisma.team.findFirst({
+        where: { name: matchSchedule.homeTeam }
+      });
+
+      if (!homeTeam) {
+        console.log(`⚠️ Équipe non trouvée: ${matchSchedule.homeTeam}`);
+        continue;
+      }
+
       await prisma.match.create({
         data: {
           tournamentId: id,
           groupId: matchSchedule.groupId!,
-          homeTeam: matchSchedule.homeTeam,
-          awayTeam: matchSchedule.awayTeam,
+          homeTeamId: homeTeam.id, // Utiliser l'ID pour la relation
+          homeTeam: homeTeam.name, // Garder le nom pour l'affichage
           date: matchDate.toISOString().split('T')[0],
           time: matchTime || '20:00',
           venue: 'Stade Principal',
@@ -513,16 +523,15 @@ export const updateFinalPhaseMatches = async (req: Request, res: Response) => {
       const homeTeamIndex = i * 2
       const awayTeamIndex = i * 2 + 1
       
-      if (homeTeamIndex < qualifiedTeams.length && awayTeamIndex < qualifiedTeams.length) {
+      if (homeTeamIndex < qualifiedTeams.length) {
         await prisma.match.update({
           where: { id: match.id },
           data: {
-            homeTeam: qualifiedTeams[homeTeamIndex],
-            awayTeam: qualifiedTeams[awayTeamIndex]
+            homeTeam: qualifiedTeams[homeTeamIndex]
           }
         })
         
-        console.log(`🏆 QF${i + 1}: ${qualifiedTeams[homeTeamIndex]} vs ${qualifiedTeams[awayTeamIndex]}`)
+        console.log(`🏆 QF${i + 1}: ${qualifiedTeams[homeTeamIndex]}`)
       }
     }
 
@@ -623,7 +632,6 @@ export const generateFinalPhaseMatches = async (req: Request, res: Response) => 
         data: {
           tournamentId: id,
           homeTeam: qualifiedTeams[homeTeamIndex],
-          awayTeam: qualifiedTeams[awayTeamIndex],
           date: matchDate.toISOString().split('T')[0],
           time: matchTime || '20:00',
           venue: 'Stade Principal',
@@ -650,7 +658,6 @@ export const generateFinalPhaseMatches = async (req: Request, res: Response) => 
         data: {
           tournamentId: id,
           homeTeam: `SF${i-3}_HOME`,
-          awayTeam: `SF${i-3}_AWAY`,
           date: matchDate.toISOString().split('T')[0],
           time: matchTime || '20:00',
           venue: 'Stade Principal',
@@ -676,7 +683,6 @@ export const generateFinalPhaseMatches = async (req: Request, res: Response) => 
       data: {
         tournamentId: id,
         homeTeam: 'FINAL_HOME',
-        awayTeam: 'FINAL_AWAY',
         date: finalDate.toISOString().split('T')[0],
         time: matchTime || '20:00',
         venue: 'Stade Principal',
@@ -841,10 +847,7 @@ export const removeTeamFromGroup = async (req: Request, res: Response) => {
     await prisma.match.deleteMany({
       where: {
         groupId,
-        OR: [
-          { homeTeam: teamId },
-          { awayTeam: teamId }
-        ]
+        homeTeam: teamId
       }
     });
     

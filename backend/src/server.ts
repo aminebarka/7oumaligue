@@ -16,6 +16,7 @@ const playerRoutes = require('./routes/player.routes').default;
 const matchRoutes = require('./routes/match.routes').default;
 const dataRoutes = require('./routes/data.routes').default;
 const liveMatchRoutes = require('./routes/liveMatch.routes').default;
+const stadiumRoutes = require('./routes/stadium.routes').default;
 
 // Load environment variables
 dotenv.config()
@@ -116,6 +117,57 @@ app.get("/health", (req, res) => {
   })
 })
 
+// Route de test pour vérifier que le serveur fonctionne
+app.get('/api/test', (req, res) => {
+  res.json({ success: true, message: 'Serveur fonctionnel' });
+});
+
+// Route de test temporaire pour les stades (sans authentification)
+app.get('/api/stadiums/test', async (req, res) => {
+  try {
+    console.log('🔍 Test de récupération des stades...');
+    
+    const { PrismaClient } = require('@prisma/client');
+    const prisma = new PrismaClient();
+    
+    const stadiums = await prisma.stadium.findMany({
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        city: true,
+        region: true,
+        capacity: true,
+        fieldCount: true,
+        fieldTypes: true,
+        amenities: true,
+        description: true,
+        isPartner: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+    
+    console.log(`✅ ${stadiums.length} stades récupérés`);
+    
+    await prisma.$disconnect();
+    
+    res.json({ 
+      success: true, 
+      data: stadiums,
+      message: 'Test des stades réussi'
+    });
+  } catch (error: any) {
+    console.error('❌ Erreur test stades:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Erreur lors du test des stades',
+      error: error.message
+    });
+  }
+});
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tournaments', tournamentRoutes);
@@ -124,6 +176,7 @@ app.use('/api/players', playerRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/data', dataRoutes);
 app.use('/api/live-matches', liveMatchRoutes);
+app.use('/api/stadiums', stadiumRoutes);
 
 // 404 handler
 app.use("*", (req, res) => {

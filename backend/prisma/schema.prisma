@@ -61,7 +61,6 @@ model Team {
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @updatedAt @map("updated_at")
   groupTeams      GroupTeam[]
-  awayMatches     Match[]          @relation("AwayMatches")
   homeMatches     Match[]          @relation("HomeMatches")
   playerRecords   Player[]
   coach           User?            @relation("Coach", fields: [coachId], references: [id])
@@ -196,11 +195,8 @@ model GroupTeam {
 model Match {
   id           String   @id @default(cuid())
   homeTeamId   String?  @default("")
-  awayTeamId   String?  @default("")
   homeTeam     String?  @default("")
-  awayTeam     String?  @default("")
   homeScore    Int?
-  awayScore    Int?
   date         DateTime @default(now())
   time         String?  @default("")
   venue        String?  @default("")
@@ -211,7 +207,6 @@ model Match {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @default(now()) @map("updated_at")
   homeTeamRef  Team?    @relation("HomeMatches", fields: [homeTeamId], references: [id])
-  awayTeamRef  Team?    @relation("AwayMatches", fields: [awayTeamId], references: [id])
   group        Group?   @relation(fields: [groupId], references: [id])
   tournament   Tournament? @relation(fields: [tournamentId], references: [id])
   tenant       Tenant?  @relation(fields: [tenantId], references: [id])
@@ -514,7 +509,6 @@ model LiveMatchState {
   isPaused    Boolean  @default(false)
   matchTime   Int      @default(0) // Temps en secondes
   homeScore   Int      @default(0)
-  awayScore   Int      @default(0)
   
   match       Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
   

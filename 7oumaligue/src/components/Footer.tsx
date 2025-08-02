@@ -61,8 +61,8 @@ const Footer: React.FC = () => {
               <LogoWithText />
               <p className="mt-4 text-gray-300 leading-relaxed">
                 {isArabic
-                  ? "منصة 7OUMA LIGUE هي أكبر مجتمع لكرة القدم المصغرة في المغرب. نربط اللاعبين والفرق والبطولات في تجربة واحدة متكاملة."
-                  : "7OUMA LIGUE est la plus grande communauté de football à 7 du Maroc. Nous connectons joueurs, équipes et tournois dans une expérience unifiée."
+                  ? "منصة 7OUMA LIGUE هي أكبر مجتمع لكرة القدم المصغرة في تونس. نربط اللاعبين والفرق والبطولات في تجربة واحدة متكاملة."
+                  : "7OUMA LIGUE est la plus grande communauté de football à 7 du Tunisie. Nous connectons joueurs, équipes et tournois dans une expérience unifiée."
                 }
               </p>
               
@@ -133,11 +133,11 @@ const Footer: React.FC = () => {
                 </div>
                 <div className="flex items-center text-gray-300">
                   <Phone className="w-4 h-4 mr-3 text-orange-400" />
-                  <span>+212 6 12 34 56 78</span>
+                  <span>0</span>
                 </div>
                 <div className="flex items-center text-gray-300">
                   <MapPin className="w-4 h-4 mr-3 text-orange-400" />
-                  <span>{isArabic ? "المغرب" : "Maroc"}</span>
+                  <span>{isArabic ? "تونس" : "Tunisie"}</span>
                 </div>
               </div>
             </div>
@@ -202,7 +202,7 @@ const Footer: React.FC = () => {
               </span>
               <Heart className="w-4 h-4 text-red-500 animate-pulse" />
               <span className="text-gray-400 text-sm ml-2">
-                {isArabic ? "في المغرب" : "au Maroc"}
+                {isArabic ? "في تونس" : "au Tunisie"}
               </span>
             </div>
           </div>
