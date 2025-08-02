@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, Send, Bot, Lightbulb, Trophy, Users, Clock, Target } from 'lucide-react'
-import { TournamentSuggestion, TournamentConstraints } from '../../../backend/src/utils/tournamentAI'
+import { TournamentSuggestion, TournamentConstraints } from '../../types'
 
 interface ChatMessage {
   id: string

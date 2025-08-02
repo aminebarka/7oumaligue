@@ -192,3 +192,24 @@ export interface AuthResponse {
   message?: string
   error?: string
 }
+
+// Tournament AI Types
+export interface TournamentSuggestion {
+  format: 'groups' | 'knockout' | 'league' | 'mixed'
+  numberOfGroups: number
+  teamsPerGroup: number
+  totalMatches: number
+  estimatedDuration: string
+  description: string
+  advantages: string[]
+  disadvantages: string[]
+  recommended: boolean
+}
+
+export interface TournamentConstraints {
+  numberOfTeams: number
+  maxDuration: string // "2h", "1d", "1w"
+  availableFields: number
+  maxMatchesPerDay: number
+  includeThirdPlace: boolean
+}

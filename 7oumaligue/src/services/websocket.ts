@@ -87,7 +87,7 @@ class LiveMatchService {
       }
     }, 2000); // Polling toutes les 2 secondes
 
-    this.pollingIntervals.set(matchId, interval);
+    this.pollingIntervals.set(matchId, interval as unknown as number);
   }
 
   // Arrêter le polling pour un match

@@ -27,7 +27,10 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
     venue: '',
     homeTeam: '',
     awayTeam: '',
-    status: 'scheduled'
+    homeScore: 0,
+    awayScore: 0,
+    status: 'scheduled',
+    type: 'tournament'
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});

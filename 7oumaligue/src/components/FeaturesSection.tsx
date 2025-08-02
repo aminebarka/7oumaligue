@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { Trophy, Users, Calendar, TrendingUp, Star, Shield, Zap, Heart } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useNavigate } from 'react-router-dom'
@@ -67,7 +67,7 @@ const FeaturesSection: React.FC = () => {
     }
   ]
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -77,14 +77,14 @@ const FeaturesSection: React.FC = () => {
     }
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   }
@@ -132,7 +132,15 @@ const FeaturesSection: React.FC = () => {
                 description={feature.description}
                 interactive={true}
                 className="h-full"
-              />
+              >
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-white/20 to-white/10 rounded-2xl mb-4">
+                    <feature.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+                  <p className="text-white/80 text-sm leading-relaxed">{feature.description}</p>
+                </div>
+              </Card3D>
             </motion.div>
           ))}
         </motion.div>

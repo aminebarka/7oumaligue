@@ -48,7 +48,7 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
 
   return (...args: Parameters<T>) => {
     clearTimeout(timeout)
-    timeout = setTimeout(() => func(...args), wait)
+    timeout = setTimeout(() => func(...args), wait) as unknown as number
   }
 }
 

@@ -55,7 +55,23 @@ export const SocialWall: React.FC<SocialWallProps> = ({
       media: [], // URLs will be handled by backend
       hashtags,
       player: currentUser,
-      team: currentUser?.team,
+      team: currentUser?.team ? {
+        id: currentUser.team.id,
+        name: currentUser.team.name,
+        logo: currentUser.team.logo || '',
+        players: [],
+        coach: '',
+        coachName: undefined,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goals: 0,
+        goalsAgainst: 0,
+        matches: 0,
+        createdAt: new Date().toISOString(),
+        averageLevel: 0,
+        playerLevels: {}
+      } : undefined,
       tournament: undefined
     })
 

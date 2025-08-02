@@ -31,14 +31,19 @@ const Stats: React.FC = () => {
   const averageGoalsPerMatch = completedMatches.length > 0 ? (totalGoals / completedMatches.length).toFixed(1) : '0';
 
   const teamStats = teams.map(team => {
-    // Vérifier si team.stats existe, sinon utiliser des valeurs par défaut
-    const stats = team.stats || { wins: 0, draws: 0, losses: 0, goals: 0, goalsAgainst: 0, matches: 0 };
+    // Calculate stats from team properties
+    const wins = team.wins || 0;
+    const draws = team.draws || 0;
+    const losses = team.losses || 0;
+    const goals = team.goals || 0;
+    const goalsAgainst = team.goalsAgainst || 0;
+    const matches = team.matches || 0;
     
     return {
       ...team,
-      points: (stats.wins * 3) + (stats.draws * 1),
-      goalDifference: stats.goals - stats.goalsAgainst,
-      winRate: stats.matches > 0 ? ((stats.wins / stats.matches) * 100).toFixed(1) : '0'
+      points: (wins * 3) + (draws * 1),
+      goalDifference: goals - goalsAgainst,
+      winRate: matches > 0 ? ((wins / matches) * 100).toFixed(1) : '0'
     };
   }).sort((a, b) => b.points - a.points);
 
@@ -172,12 +177,12 @@ const Stats: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{team.stats?.matches || 0}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">{team.stats?.wins || 0}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-yellow-600 font-medium">{team.stats?.draws || 0}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">{team.stats?.losses || 0}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{team.stats?.goals || 0}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{team.stats?.goalsAgainst || 0}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{team.matches || 0}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">{team.wins || 0}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-yellow-600 font-medium">{team.draws || 0}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">{team.losses || 0}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{team.goals || 0}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{team.goalsAgainst || 0}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
                       {team.goalDifference > 0 ? `+${team.goalDifference}` : team.goalDifference}
                     </td>

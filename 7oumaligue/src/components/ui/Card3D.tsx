@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { LucideIcon } from 'lucide-react'
 
 interface Card3DProps {
@@ -30,7 +30,7 @@ const Card3D: React.FC<Card3DProps> = ({
     testimonial: 'bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-blue-500/20'
   }
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     initial: {
       y: 0,
       scale: 1,
@@ -42,7 +42,7 @@ const Card3D: React.FC<Card3DProps> = ({
       filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.3))",
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     } : {},
     tap: interactive ? {
@@ -53,7 +53,7 @@ const Card3D: React.FC<Card3DProps> = ({
     } : {}
   }
 
-  const glowVariants = {
+  const glowVariants: Variants = {
     initial: {
       opacity: 0,
       scale: 0.8
@@ -63,12 +63,12 @@ const Card3D: React.FC<Card3DProps> = ({
       scale: 1.1,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     } : {}
   }
 
-  const iconVariants = {
+  const iconVariants: Variants = {
     initial: {
       scale: 1,
       rotate: 0
@@ -78,7 +78,7 @@ const Card3D: React.FC<Card3DProps> = ({
       rotate: 5,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     } : {}
   }

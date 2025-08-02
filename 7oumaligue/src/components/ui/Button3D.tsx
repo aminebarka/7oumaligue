@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { LucideIcon } from 'lucide-react'
 
 interface Button3DProps {
@@ -39,7 +39,7 @@ const Button3D: React.FC<Button3DProps> = ({
     ghost: 'bg-white/10 backdrop-blur-sm text-white hover:bg-white/20'
   }
 
-  const buttonVariants = {
+  const buttonVariants: Variants = {
     initial: {
       y: 0,
       scale: 1,
@@ -51,7 +51,7 @@ const Button3D: React.FC<Button3DProps> = ({
       filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.3))",
       transition: {
         duration: 0.2,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     },
     tap: {
@@ -68,7 +68,7 @@ const Button3D: React.FC<Button3DProps> = ({
     }
   }
 
-  const glowVariants = {
+  const glowVariants: Variants = {
     initial: {
       opacity: 0,
       scale: 0.8
@@ -78,7 +78,7 @@ const Button3D: React.FC<Button3DProps> = ({
       scale: 1.2,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   }

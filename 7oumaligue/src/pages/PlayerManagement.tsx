@@ -8,7 +8,7 @@ interface Player {
   position: string;
   age: number;
   level: number;
-  teamId: string;
+  teamId?: string;
 }
 
 interface Team {
@@ -24,7 +24,7 @@ const PlayerManagementPage: React.FC = () => {
   const allPlayers = players || [];
 
   const getTeamPlayers = (teamId: string): Player[] => {
-    return allPlayers.filter(p => p.teamId === teamId);
+    return allPlayers.filter(p => p.teamId && p.teamId === teamId);
   };
 
   const renderStars = (level: number) => {

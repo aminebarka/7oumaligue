@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Trophy, Users, Sparkles, ArrowRight, Play } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ const Hero3D: React.FC = () => {
   const isArabic = language === 'ar';
   const navigate = useNavigate();
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -20,38 +20,38 @@ const Hero3D: React.FC = () => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   };
 
-  const floatingBallVariants = {
+  const floatingBallVariants: Variants = {
     animate: {
       y: [-10, 10, -10],
       rotate: [0, 360],
       transition: {
         duration: 4,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   };
 
-  const glowVariants = {
+  const glowVariants: Variants = {
     animate: {
       scale: [1, 1.1, 1],
       opacity: [0.5, 0.8, 0.5],
       transition: {
         duration: 3,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   };

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Navigate } from 'react-router-dom';
+import { GroupTeam } from '../types';
 import { 
   Plus, 
   Edit, 
@@ -37,15 +38,7 @@ interface Group {
   id: string;
   name: string;
   tournamentId: string;
-  groupTeams: Array<{
-    id: string;
-    teamId: string;
-    team: {
-      id: string;
-      name: string;
-      logo: string | null;
-    };
-  }>;
+  groupTeams: GroupTeam[];
 }
 
 interface Team {
@@ -105,12 +98,17 @@ const Groups: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Erreur lors de l\'ajout de l\'équipe au groupe:', error);
-      console.error('Détails de l\'erreur:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status
-      });
-      alert(`Erreur lors de l'ajout de l'équipe: ${error.response?.data?.message || error.message}`);
+      if (error instanceof Error) {
+        console.error('Détails de l\'erreur:', {
+          message: error.message,
+          response: (error as any).response?.data,
+          status: (error as any).response?.status
+        });
+        alert(`Erreur lors de l'ajout de l'équipe: ${(error as any).response?.data?.message || error.message}`);
+      } else {
+        console.error('Erreur inconnue:', error);
+        alert('Erreur lors de l\'ajout de l\'équipe');
+      }
     }
   };
 
@@ -122,12 +120,17 @@ const Groups: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Erreur lors du retrait de l\'équipe du groupe:', error);
-      console.error('Détails de l\'erreur:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status
-      });
-      alert(`Erreur lors du retrait de l'équipe: ${error.response?.data?.message || error.message}`);
+      if (error instanceof Error) {
+        console.error('Détails de l\'erreur:', {
+          message: error.message,
+          response: (error as any).response?.data,
+          status: (error as any).response?.status
+        });
+        alert(`Erreur lors du retrait de l'équipe: ${(error as any).response?.data?.message || error.message}`);
+      } else {
+        console.error('Erreur inconnue:', error);
+        alert('Erreur lors du retrait de l\'équipe');
+      }
     }
   };
 
@@ -143,6 +146,11 @@ const Groups: React.FC = () => {
       setMovingTeam(null);
     } catch (error) {
       console.error('Erreur lors du déplacement de l\'équipe:', error);
+      if (error instanceof Error) {
+        console.error('Détails de l\'erreur:', error.message);
+      } else {
+        console.error('Erreur inconnue:', error);
+      }
     }
   };
 
@@ -160,6 +168,11 @@ const Groups: React.FC = () => {
       setShowCreateModal(false);
     } catch (error) {
       console.error('Erreur lors de la création du groupe:', error);
+      if (error instanceof Error) {
+        console.error('Détails de l\'erreur:', error.message);
+      } else {
+        console.error('Erreur inconnue:', error);
+      }
     }
   };
 
@@ -173,6 +186,11 @@ const Groups: React.FC = () => {
       setEditingGroup(null);
     } catch (error) {
       console.error('Erreur lors de la modification du groupe:', error);
+      if (error instanceof Error) {
+        console.error('Détails de l\'erreur:', error.message);
+      } else {
+        console.error('Erreur inconnue:', error);
+      }
     }
   };
 
@@ -186,6 +204,11 @@ const Groups: React.FC = () => {
       await loadData();
     } catch (error) {
       console.error('Erreur lors de la suppression du groupe:', error);
+      if (error instanceof Error) {
+        console.error('Détails de l\'erreur:', error.message);
+      } else {
+        console.error('Erreur inconnue:', error);
+      }
     }
   };
 
@@ -202,7 +225,11 @@ const Groups: React.FC = () => {
       alert(message);
     } catch (error) {
       console.error('Erreur lors de la génération des matchs:', error);
-      alert(`Erreur lors de la génération des matchs: ${error.response?.data?.message || error.message}`);
+      if (error instanceof Error) {
+        alert(`Erreur lors de la génération des matchs: ${(error as any).response?.data?.message || error.message}`);
+      } else {
+        alert('Erreur lors de la génération des matchs');
+      }
     }
   };
 
@@ -216,7 +243,11 @@ const Groups: React.FC = () => {
       alert(`Équipes qualifiées assignées avec succès !\n\n🏆 ${result.qualifiedTeams.length} équipes qualifiées`);
     } catch (error) {
       console.error('Erreur lors de la mise à jour des équipes qualifiées:', error);
-      alert(`Erreur: ${error.response?.data?.message || error.message}`);
+      if (error instanceof Error) {
+        alert(`Erreur: ${(error as any).response?.data?.message || error.message}`);
+      } else {
+        alert('Erreur lors de la mise à jour des équipes qualifiées');
+      }
     }
   };
 
@@ -230,7 +261,11 @@ const Groups: React.FC = () => {
       alert(`Matchs de la phase finale générés avec succès !\n\n🏆 ${result.totalMatches} matchs créés\n- ${result.quarters} quarts de finale\n- ${result.semis} demi-finales\n- ${result.final} finale`);
     } catch (error) {
       console.error('Erreur lors de la génération des matchs de la phase finale:', error);
-      alert(`Erreur: ${error.response?.data?.message || error.message}`);
+      if (error instanceof Error) {
+        alert(`Erreur: ${(error as any).response?.data?.message || error.message}`);
+      } else {
+        alert('Erreur lors de la génération des matchs de la phase finale');
+      }
     }
   };
 
@@ -254,6 +289,7 @@ const Groups: React.FC = () => {
     
     // Calculer les points pour chaque équipe
     const teamStats = group.groupTeams?.map(gt => {
+      const team = teams.find(t => t.id === gt.teamId);
       const teamMatches = groupMatches.filter(m => 
         m.homeTeam === gt.teamId || m.awayTeam === gt.teamId
       );
@@ -286,7 +322,7 @@ const Groups: React.FC = () => {
       
       return {
         teamId: gt.teamId,
-        teamName: gt.team.name,
+        teamName: team?.name || 'Équipe inconnue',
         points,
         goalsFor,
         goalsAgainst,
@@ -306,7 +342,7 @@ const Groups: React.FC = () => {
     });
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -317,14 +353,14 @@ const Groups: React.FC = () => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   };
@@ -592,10 +628,10 @@ const Groups: React.FC = () => {
                           >
                             <div className="flex items-center space-x-4">
                               <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                                {groupTeam.team.logo || '⚽'}
+                                {teams.find(t => t.id === groupTeam.teamId)?.logo || '⚽'}
                               </div>
                               <div>
-                                <span className="font-semibold text-gray-900">{groupTeam.team.name}</span>
+                                <span className="font-semibold text-gray-900">{teams.find(t => t.id === groupTeam.teamId)?.name || 'Équipe inconnue'}</span>
                                 {index === 0 && (
                                   <div className="flex items-center mt-1">
                                     <Crown className="w-3 h-3 text-yellow-500 mr-1" />
@@ -612,7 +648,7 @@ const Groups: React.FC = () => {
                                 <button
                                   onClick={() => setMovingTeam({
                                     teamId: groupTeam.teamId,
-                                    teamName: groupTeam.team.name,
+                                    teamName: teams.find(t => t.id === groupTeam.teamId)?.name || 'Équipe inconnue',
                                     fromGroupId: group.id
                                   })}
                                   className="p-2 text-blue-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-300"

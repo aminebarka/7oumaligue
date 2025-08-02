@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { useLanguage } from '../contexts/LanguageContext'
 
 interface Logo3DProps {
@@ -23,7 +23,7 @@ const Logo3D: React.FC<Logo3DProps> = ({
     xl: 'w-32 h-32'
   }
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     initial: { 
       rotateY: 0,
       scale: 1
@@ -33,7 +33,7 @@ const Logo3D: React.FC<Logo3DProps> = ({
       scale: 1.05,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     },
     tap: { 
@@ -44,7 +44,7 @@ const Logo3D: React.FC<Logo3DProps> = ({
     }
   }
 
-  const logoVariants = {
+  const logoVariants: Variants = {
     initial: { 
       y: 0,
       filter: "drop-shadow(0 0 0 rgba(0,0,0,0))"
@@ -54,12 +54,12 @@ const Logo3D: React.FC<Logo3DProps> = ({
       filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.3))",
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   }
 
-  const glowVariants = {
+  const glowVariants: Variants = {
     initial: { 
       opacity: 0,
       scale: 0.8
@@ -69,12 +69,12 @@ const Logo3D: React.FC<Logo3DProps> = ({
       scale: 1.2,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   }
 
-  const textVariants = {
+  const textVariants: Variants = {
     initial: { 
       opacity: 0,
       x: variant === 'hero' ? -20 : 0

@@ -89,6 +89,7 @@ const TVDisplay: React.FC = () => {
         rules: 'Règlement standard',
         status: 'active',
         teams: mockTeams,
+        tournamentTeams: [],
         matches: [],
         drawCompleted: true,
         numberOfGroups: 2,

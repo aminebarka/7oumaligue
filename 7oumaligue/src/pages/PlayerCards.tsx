@@ -19,18 +19,7 @@ const PlayerCards: React.FC = () => {
       team: {
         id: '1',
         name: 'Équipe A',
-        logo: '',
-        players: [],
-        coach: 'Coach A',
-        wins: 3,
-        draws: 1,
-        losses: 1,
-        goals: 12,
-        goalsAgainst: 5,
-        matches: 5,
-        createdAt: new Date().toISOString(),
-        averageLevel: 4,
-        playerLevels: {}
+        logo: ''
       }
     },
     {
@@ -44,18 +33,7 @@ const PlayerCards: React.FC = () => {
       team: {
         id: '1',
         name: 'Équipe A',
-        logo: '',
-        players: [],
-        coach: 'Coach A',
-        wins: 3,
-        draws: 1,
-        losses: 1,
-        goals: 12,
-        goalsAgainst: 5,
-        matches: 5,
-        createdAt: new Date().toISOString(),
-        averageLevel: 4,
-        playerLevels: {}
+        logo: ''
       }
     },
     {
@@ -69,18 +47,7 @@ const PlayerCards: React.FC = () => {
       team: {
         id: '2',
         name: 'Équipe B',
-        logo: '',
-        players: [],
-        coach: 'Coach B',
-        wins: 2,
-        draws: 2,
-        losses: 1,
-        goals: 8,
-        goalsAgainst: 6,
-        matches: 5,
-        createdAt: new Date().toISOString(),
-        averageLevel: 3,
-        playerLevels: {}
+        logo: ''
       }
     },
     {
@@ -94,18 +61,7 @@ const PlayerCards: React.FC = () => {
       team: {
         id: '2',
         name: 'Équipe B',
-        logo: '',
-        players: [],
-        coach: 'Coach B',
-        wins: 2,
-        draws: 2,
-        losses: 1,
-        goals: 8,
-        goalsAgainst: 6,
-        matches: 5,
-        createdAt: new Date().toISOString(),
-        averageLevel: 3,
-        playerLevels: {}
+        logo: ''
       }
     },
     {
@@ -119,43 +75,49 @@ const PlayerCards: React.FC = () => {
       team: {
         id: '3',
         name: 'Équipe C',
-        logo: '',
-        players: [],
-        coach: 'Coach C',
-        wins: 4,
-        draws: 0,
-        losses: 1,
-        goals: 15,
-        goalsAgainst: 3,
-        matches: 5,
-        createdAt: new Date().toISOString(),
-        averageLevel: 5,
-        playerLevels: {}
+        logo: ''
       }
     },
     {
       id: '6',
-      name: 'Oussama Haddadi',
+      name: 'Oussama Idrissi',
       position: 'Milieu',
       level: 4,
       age: 26,
       teamId: '3',
-      jerseyNumber: 6,
+      jerseyNumber: 7,
       team: {
         id: '3',
         name: 'Équipe C',
-        logo: '',
-        players: [],
-        coach: 'Coach C',
-        wins: 4,
-        draws: 0,
-        losses: 1,
-        goals: 15,
-        goalsAgainst: 3,
-        matches: 5,
-        createdAt: new Date().toISOString(),
-        averageLevel: 5,
-        playerLevels: {}
+        logo: ''
+      }
+    },
+    {
+      id: '7',
+      name: 'Achraf Hakimi',
+      position: 'Défenseur',
+      level: 4,
+      age: 23,
+      teamId: '4',
+      jerseyNumber: 2,
+      team: {
+        id: '4',
+        name: 'Équipe D',
+        logo: ''
+      }
+    },
+    {
+      id: '8',
+      name: 'Yassine Bounou',
+      position: 'Gardien',
+      level: 5,
+      age: 31,
+      teamId: '4',
+      jerseyNumber: 1,
+      team: {
+        id: '4',
+        name: 'Équipe D',
+        logo: ''
       }
     }
   ]

@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import { LucideIcon } from 'lucide-react'
 
@@ -23,7 +23,7 @@ const Navigation3D: React.FC<Navigation3DProps> = ({
 }) => {
   const location = useLocation()
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -33,19 +33,19 @@ const Navigation3D: React.FC<Navigation3DProps> = ({
     }
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   }
 
-  const navItemVariants = {
+  const navItemVariants: Variants = {
     initial: {
       y: 0,
       scale: 1,
@@ -57,7 +57,7 @@ const Navigation3D: React.FC<Navigation3DProps> = ({
       filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.2))",
       transition: {
         duration: 0.2,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     },
     tap: {

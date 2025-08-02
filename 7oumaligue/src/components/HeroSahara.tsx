@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { ArrowRight, Play, Sparkles, Sun, Wind } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -11,7 +11,7 @@ const HeroSahara: React.FC = () => {
   const { language } = useLanguage()
   const isArabic = language === 'ar'
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -22,50 +22,50 @@ const HeroSahara: React.FC = () => {
     }
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   }
 
-  const floatingBallVariants = {
+  const floatingBallVariants: Variants = {
     animate: {
       y: [0, -20, 0],
       rotate: [0, 5, -5, 0],
       transition: {
         duration: 4,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   }
 
-  const sunVariants = {
+  const sunVariants: Variants = {
     animate: {
       rotate: [0, 360],
       scale: [1, 1.1, 1],
       transition: {
         duration: 20,
         repeat: Infinity,
-        ease: "linear"
+        ease: "linear" as const
       }
     }
   }
 
-  const sandVariants = {
+  const sandVariants: Variants = {
     animate: {
       x: [0, 10, 0],
       opacity: [0.3, 0.7, 0.3],
       transition: {
         duration: 8,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   }

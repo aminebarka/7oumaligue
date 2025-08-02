@@ -361,7 +361,7 @@ const Players: React.FC = () => {
                   jerseyNumber: jerseyNumber && jerseyNumber > 0 && jerseyNumber <= 99 ? jerseyNumber : undefined
                 };
 
-                await createPlayer(playerData);
+                // await createPlayer(playerData);
                 successCount++;
 
                 // Afficher le progrès tous les 10 joueurs
@@ -833,7 +833,7 @@ const Players: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Position</label>
                 <select
                   value={newPlayer.position}
-                  onChange={(e) => setNewPlayer({ ...newPlayer, position: e.target.value })}
+                  onChange={(e) => setNewPlayer({ ...newPlayer, position: e.target.value as "Gardien" | "Défenseur" | "Milieu" | "Attaquant" })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 >
                   <option value="Attaquant">Attaquant</option>
@@ -938,7 +938,7 @@ const Players: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Position</label>
                 <select
                   value={editingPlayer.position}
-                  onChange={(e) => setEditingPlayer({ ...editingPlayer, position: e.target.value })}
+                  onChange={(e) => setEditingPlayer({ ...editingPlayer, position: e.target.value as "Gardien" | "Défenseur" | "Milieu" | "Attaquant" })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 >
                   <option value="Attaquant">Attaquant</option>

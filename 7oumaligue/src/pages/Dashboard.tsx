@@ -121,7 +121,7 @@ const Dashboard: React.FC = () => {
                       {match.homeTeam}
                     </div>
                     <div className="text-lg font-bold text-gray-900">
-                      {match.status === 'Terminé' ? `${match.homeScore} - ${match.awayScore}` : 'VS'}
+                      {match.status === 'completed' ? `${match.homeScore} - ${match.awayScore}` : 'VS'}
                     </div>
                     <div className="text-sm font-medium text-gray-900">
                       {match.awayTeam}
@@ -131,7 +131,7 @@ const Dashboard: React.FC = () => {
                     <Clock className="w-4 h-4 text-gray-400" />
                     <span className="text-sm text-gray-500">{match.date}</span>
                     <span className={`text-xs px-2 py-1 rounded-full ${
-                      match.status === 'Terminé' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                      match.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                     }`}>
                       {match.status}
                     </span>
@@ -166,12 +166,12 @@ const Dashboard: React.FC = () => {
                   <div>
                     <div className="font-medium text-gray-900">{team.name}</div>
                     <div className="text-sm text-gray-500">
-                      {team.wins || 0} victoires sur {team.played || 0} matchs
+                      {team.wins || 0} victoires sur {team.matches || 0} matchs
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-lg font-bold text-gray-900">{team.points || 0}</div>
+                  <div className="text-lg font-bold text-gray-900">{team.wins * 3 + team.draws || 0}</div>
                   <div className="text-sm text-gray-500">points</div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { MessageCircle, X, Send, Bot, Sparkles, Trophy, Users, BarChart3 } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 
@@ -104,7 +104,7 @@ const TahiaCoachAI: React.FC = () => {
     }, 1000)
   }
 
-  const chatVariants = {
+  const chatVariants: Variants = {
     hidden: { 
       opacity: 0, 
       scale: 0.8,
@@ -116,7 +116,7 @@ const TahiaCoachAI: React.FC = () => {
       y: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     },
     exit: {
@@ -129,7 +129,7 @@ const TahiaCoachAI: React.FC = () => {
     }
   }
 
-  const messageVariants = {
+  const messageVariants: Variants = {
     hidden: { opacity: 0, x: -20 },
     visible: { 
       opacity: 1, 
