@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { Suspense, lazy } from "react"
 import { AuthProvider } from "./contexts/AuthContext"
 import { DataProvider } from "./contexts/DataContext"
 import { LanguageProvider } from "./contexts/LanguageContext"
@@ -9,31 +10,34 @@ import { ThemeProvider } from "./contexts/ThemeContext"
 import { useAuth } from "./contexts/AuthContext"
 import { useLanguage } from "./contexts/LanguageContext"
 import Header from "./components/Header"
-import Home from "./pages/Home"
-import Login from "./pages/Login"
-import Dashboard from "./pages/Dashboard"
-import Teams from "./pages/Teams"
-import Players from "./pages/Players"
-import Tournaments from "./pages/Tournaments"
-import Matches from "./pages/Matches"
-import LiveMatch from "./pages/LiveMatch"
-import Stats from "./pages/Stats"
-import Admin from "./pages/Admin"
-import Profile from "./pages/Profile"
-import Heroes from "./pages/Heroes"
-import Groups from "./pages/Groups"
-import PlayerManagement from "./pages/PlayerManagement"
-import Stadiums from "./pages/Stadiums"
-// Nouvelles pages pour les fonctionnalités avancées
-import TVDisplay from "./pages/TVDisplay"
-import SocialWall from "./pages/SocialWall"
-import PaymentCenter from "./pages/PaymentCenter"
-import PlayerCards from "./pages/PlayerCards"
-import TournamentAI from "./pages/TournamentAI"
-import Store from "./pages/Store"
-import FreePlayers from "./pages/FreePlayers"
-import Sponsors from "./pages/Sponsors"
+
+// Lazy load all pages for better code splitting
+const Home = lazy(() => import("./pages/Home"))
+const Login = lazy(() => import("./pages/Login"))
+const Dashboard = lazy(() => import("./pages/Dashboard"))
+const Teams = lazy(() => import("./pages/Teams"))
+const Players = lazy(() => import("./pages/Players"))
+const Tournaments = lazy(() => import("./pages/Tournaments"))
+const Matches = lazy(() => import("./pages/Matches"))
+const LiveMatch = lazy(() => import("./pages/LiveMatch"))
+const Stats = lazy(() => import("./pages/Stats"))
+const Admin = lazy(() => import("./pages/Admin"))
+const Profile = lazy(() => import("./pages/Profile"))
+const Heroes = lazy(() => import("./pages/Heroes"))
+const Groups = lazy(() => import("./pages/Groups"))
+const PlayerManagement = lazy(() => import("./pages/PlayerManagement"))
+const Stadiums = lazy(() => import("./pages/Stadiums"))
+const TVDisplay = lazy(() => import("./pages/TVDisplay"))
+const SocialWall = lazy(() => import("./pages/SocialWall"))
+const PaymentCenter = lazy(() => import("./pages/PaymentCenter"))
+const PlayerCards = lazy(() => import("./pages/PlayerCards"))
+const TournamentAI = lazy(() => import("./pages/TournamentAI"))
+const Store = lazy(() => import("./pages/Store"))
+const FreePlayers = lazy(() => import("./pages/FreePlayers"))
+const Sponsors = lazy(() => import("./pages/Sponsors"))
+
 import { useParams } from "react-router-dom"
+import { PageLoading } from "./components/ui/loading-spinner"
 import "./App.css"
 
 // Wrapper pour LiveMatch qui récupère le matchId depuis l'URL
@@ -47,11 +51,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   const { user, isLoading } = useAuth()
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-500"></div>
-      </div>
-    )
+    return <PageLoading />
   }
 
   return user ? <>{children}</> : <Navigate to="/login" replace />
@@ -62,11 +62,7 @@ const ReadOnlyRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const { user, isLoading } = useAuth()
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-500"></div>
-      </div>
-    )
+    return <PageLoading />
   }
 
   return user ? <>{children}</> : <Navigate to="/login" replace />
@@ -83,7 +79,11 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       dir={isRTL ? "rtl" : "ltr"}
     >
       {user && <Header />}
-      <main className={user ? "pt-16" : ""}>{children}</main>
+      <main className={user ? "pt-16" : ""}>
+        <Suspense fallback={<PageLoading />}>
+          {children}
+        </Suspense>
+      </main>
     </div>
   )
 }

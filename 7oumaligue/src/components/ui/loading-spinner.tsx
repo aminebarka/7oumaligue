@@ -1,27 +1,43 @@
-import type React from "react"
-import { cn } from "../../lib/utils"
+import React from 'react'
 
 interface LoadingSpinnerProps {
-  size?: "sm" | "md" | "lg"
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  color?: string
   className?: string
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = "md", className }) => {
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
+  size = 'lg', 
+  color = 'border-green-500',
+  className = ''
+}) => {
   const sizeClasses = {
-    sm: "h-4 w-4",
-    md: "h-8 w-8",
-    lg: "h-12 w-12",
+    sm: 'h-8 w-8',
+    md: 'h-16 w-16', 
+    lg: 'h-32 w-32',
+    xl: 'h-48 w-48'
   }
 
   return (
-    <div
-      className={cn(
-        "animate-spin rounded-full border-2 border-gray-300 border-t-green-600",
-        sizeClasses[size],
-        className,
-      )}
-    />
+    <div className={`flex items-center justify-center ${className}`}>
+      <div className={`animate-spin rounded-full border-b-2 ${color} ${sizeClasses[size]}`}></div>
+    </div>
   )
 }
 
-export default LoadingSpinner
+// Page loading component
+export const PageLoading: React.FC = () => (
+  <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+    <div className="text-center">
+      <LoadingSpinner size="lg" />
+      <p className="mt-4 text-gray-600 dark:text-gray-400">Chargement...</p>
+    </div>
+  </div>
+)
+
+// Component loading
+export const ComponentLoading: React.FC = () => (
+  <div className="flex items-center justify-center p-8">
+    <LoadingSpinner size="md" />
+  </div>
+)
