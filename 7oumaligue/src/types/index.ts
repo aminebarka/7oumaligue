@@ -30,6 +30,7 @@ export interface Team {
   logo: string;
   players: string[];
   coach: string;
+  coachName?: string;
   wins: number;
   draws: number;
   losses: number;
@@ -98,6 +99,7 @@ export interface Tournament {
   rules: string;
   stadium?: string; // Nom du stade
   status: "upcoming" | "active" | "completed";
+  teams?: Team[];
   tournamentTeams: TournamentTeam[];
   matches: string[]; // IDs des matchs
   drawCompleted: boolean;

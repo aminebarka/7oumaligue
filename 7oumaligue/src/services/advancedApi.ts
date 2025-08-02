@@ -283,14 +283,18 @@ export const stadiumService = {
       
     } catch (error) {
       console.error('❌ Erreur lors de la récupération des stades:', error);
-      console.error('📋 Détails de l\'erreur:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        url: error.config?.url,
-        method: error.config?.method
-      });
+      if (error instanceof Error) {
+        console.error('📋 Détails de l\'erreur:', {
+          message: error.message,
+          response: (error as any).response?.data,
+          status: (error as any).response?.status,
+          statusText: (error as any).response?.statusText,
+          url: (error as any).config?.url,
+          method: (error as any).config?.method
+        });
+      } else {
+        console.error('📋 Erreur inconnue:', error);
+      }
       return [];
     }
   },

@@ -27,7 +27,7 @@ export interface LiveMatchState {
 class LiveMatchService {
   private listeners: Map<string, ((state: LiveMatchState) => void)[]> = new Map();
   private matchStates: Map<string, LiveMatchState> = new Map();
-  private pollingIntervals: Map<string, NodeJS.Timeout> = new Map();
+  private pollingIntervals: Map<string, number> = new Map();
 
   // S'abonner aux mises à jour d'un match
   subscribe(matchId: string, callback: (state: LiveMatchState) => void) {
